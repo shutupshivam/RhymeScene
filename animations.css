@@ -1,23 +1,11 @@
-.fade-in {
-  animation: fadeIn 0.35s ease forwards;
+.glass {
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
-.slide-down {
-  animation: slideDown 0.3s ease forwards;
+.analyze-btn:not(.disabled):hover {
+  transform: translateY(-1px);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.edit-toggle:hover {
+  background: rgba(255,255,255,0.16);
 }

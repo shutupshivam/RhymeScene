@@ -1,128 +1,144 @@
-const title = document.getElementById("title");
-const lyrics = document.getElementById("lyrics");
-const analyzeBtn = document.getElementById("analyzeBtn");
-const editToggle = document.getElementById("editToggle");
-const categoriesEl = document.getElementById("categories");
-
-const titlePh = document.getElementById("titlePh");
-const lyricsPh = document.getElementById("lyricsPh");
+const lyricsEl = document.getElementById("lyrics");
+const actionBtn = document.getElementById("actionBtn");
+const panelContent = document.getElementById("panelContent");
+const resizeHandle = document.getElementById("resizeHandle");
+const panel = document.querySelector(".analysis-panel");
+const lyricsArea = document.querySelector(".lyrics-area");
 
 let analyzed = false;
+let locked = false;
+let currentLine = "";
 
-/* PLACEHOLDERS */
-function updatePlaceholders() {
-  titlePh.style.display = title.textContent.trim() ? "none" : "block";
-  lyricsPh.style.display = lyrics.textContent.trim() ? "none" : "block";
+/* Enable analyze */
+lyricsEl.addEventListener("input", () => {
+  actionBtn.classList.toggle("disabled", !lyricsEl.textContent.trim());
+  if (analyzed) resetAnalyze();
+});
+
+/* Button logic */
+actionBtn.onclick = async () => {
+  if (actionBtn.classList.contains("disabled")) return;
+
+  if (!analyzed) {
+    await analyzeSong();
+  } else if (locked) {
+    unlockLyrics();
+  } else {
+    lockLyrics();
+  }
+};
+
+/* Analyze */
+async function analyzeSong() {
+  analyzed = true;
+  lockLyrics();
+  actionBtn.textContent = "Edit";
 }
-title.addEventListener("input", updatePlaceholders);
-lyrics.addEventListener("input", updatePlaceholders);
-updatePlaceholders();
 
-/* ENABLE / RESET ANALYZE */
-lyrics.addEventListener("input", () => {
-  analyzeBtn.classList.toggle(
-    "disabled",
-    lyrics.textContent.trim().length === 0
-  );
+/* Lock */
+function lockLyrics() {
+  locked = true;
+  actionBtn.textContent = "Edit";
+  lyricsEl.contentEditable = false;
+  renderLines();
+}
 
-  if (analyzed) {
-    analyzeBtn.textContent = "Analyze";
-    analyzeBtn.disabled = false;
-    analyzed = false;
+/* Unlock */
+function unlockLyrics() {
+  locked = false;
+  actionBtn.textContent = "Lock";
+  lyricsEl.contentEditable = true;
+  unwrapLines();
+}
+
+/* Reset */
+function resetAnalyze() {
+  analyzed = false;
+  locked = false;
+  actionBtn.textContent = "Analyze";
+  panelContent.innerHTML = `<div class="empty-state">Select a line…</div>`;
+}
+
+/* Render lines */
+function renderLines() {
+  const lines = lyricsEl.innerText.split("\n");
+  lyricsEl.innerHTML = lines.map(line =>
+    `<div class="line locked">
+      ${line}
+      <span class="line-actions">
+        <span data-act="replace">Replace</span>
+        <span data-act="explain">Explain</span>
+      </span>
+    </div>`
+  ).join("");
+}
+
+/* Unwrap */
+function unwrapLines() {
+  lyricsEl.innerText = Array.from(lyricsEl.querySelectorAll(".line"))
+    .map(l => l.innerText.replace("ReplaceExplain", "").trim())
+    .join("\n");
+}
+
+/* Line click */
+lyricsEl.addEventListener("click", async e => {
+  if (!locked) return;
+
+  const lineEl = e.target.closest(".line");
+  if (!lineEl) return;
+
+  const line = lineEl.childNodes[0].textContent.trim();
+  currentLine = line;
+
+  if (e.target.dataset.act === "replace") {
+    showReplace(line);
+  } else {
+    showExplain(line);
   }
 });
 
-/* GPT-5.2 */
-async function runAI(lyricsText) {
-  const prompt = `
-Return ONLY valid JSON.
+/* Explain */
+async function showExplain(line) {
+  panelContent.innerHTML = `<b>Line explanation</b><br><br>${line}<br><br>Loading…`;
 
-{
-  "Word": [{ "target": "", "suggestions": [] }],
-  "Rhyme": [{ "line": "", "suggestions": [] }],
-  "Flow": [],
-  "Emotion": [],
-  "Imagery": [],
-  "Cliché": [],
-  "Overview": []
+  const res = await puter.ai.chat(
+    `Explain this song line briefly:\n"${line}"`,
+    { model: "gpt-5.2", temperature: 0.4 }
+  );
+
+  panelContent.innerHTML = `<b>Explanation</b><br><br>${res}`;
 }
 
-Rules:
-- No explanations
-- Suggestions only
+/* Replace */
+async function showReplace(line) {
+  panelContent.innerHTML = `<b>Replace line</b><br><br>Loading…`;
 
-Lyrics:
-"""${lyricsText}"""
-`;
+  const res = await puter.ai.chat(
+    `Suggest 5 alternative lines keeping rhyme, rhythm and meaning:\n"${line}"`,
+    { model: "gpt-5.2", temperature: 0.7 }
+  );
 
-  const res = await puter.ai.chat(prompt, {
-    model: "gpt-5.2",
-    temperature: 0.6
-  });
-
-  return JSON.parse(res);
+  panelContent.innerHTML =
+    `<b>Suggestions</b><br><br>` +
+    res.split("\n").map(l => `• ${l}`).join("<br>");
 }
 
-/* RENDER */
-function renderCategories(data) {
-  categoriesEl.innerHTML = "";
+/* Resize logic */
+let resizing = false;
 
-  Object.entries(data).forEach(([name, content]) => {
-    const el = document.createElement("div");
-    el.className = "category";
-
-    let html = "";
-
-    if (name === "Word") {
-      html = content.map(item =>
-        `<div><b>${item.target}</b> ${
-          item.suggestions.map(s => `<span class="chip">${s}</span>`).join("")
-        }</div>`
-      ).join("");
-    } 
-    else if (name === "Rhyme") {
-      html = content.map(item =>
-        `<div><i>${item.line}</i><br>${
-          item.suggestions.map(s => `• ${s}`).join("<br>")
-        }</div>`
-      ).join("");
-    } 
-    else {
-      html = content.map(i => `• ${i}`).join("<br>");
-    }
-
-    el.innerHTML = `
-      <div class="category-title">${name}</div>
-      <div class="category-content">${html}</div>
-    `;
-
-    el.onclick = () => el.classList.toggle("expanded");
-
-    categoriesEl.appendChild(el);
-  });
-}
-
-/* ANALYZE */
-analyzeBtn.onclick = async () => {
-  if (analyzeBtn.classList.contains("disabled")) return;
-
-  analyzeBtn.textContent = "Analyzing…";
-  analyzeBtn.disabled = true;
-  analyzed = true;
-
-  title.contentEditable = false;
-  lyrics.contentEditable = false;
-  editToggle.classList.remove("hidden");
-
-  const data = await runAI(lyrics.textContent.trim());
-  renderCategories(data);
-
-  analyzeBtn.textContent = "Analyzed";
+resizeHandle.onmousedown = () => {
+  resizing = true;
+  document.body.style.cursor = "ew-resize";
 };
 
-/* EDIT */
-editToggle.onclick = () => {
-  title.contentEditable = true;
-  lyrics.contentEditable = true;
-  editToggle.classList.add("hidden");
+document.onmouseup = () => {
+  resizing = false;
+  document.body.style.cursor = "default";
+};
+
+document.onmousemove = e => {
+  if (!resizing) return;
+  const w = Math.min(Math.max(window.innerWidth - e.clientX, 280), 520);
+  panel.style.width = w + "px";
+  lyricsArea.style.marginRight = w + "px";
 };

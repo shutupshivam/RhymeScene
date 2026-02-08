@@ -1,7 +1,11 @@
-.category {
-  transition: background 0.3s, box-shadow 0.3s, opacity 0.3s;
+* {
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 .analyze-btn:not(.disabled):hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }

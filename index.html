@@ -5,7 +5,6 @@
   <title>Rhyme Scene</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- FAVICON -->
   <link rel="icon" href="favicon.png" />
 
   <link rel="stylesheet" href="style.css" />
@@ -27,37 +26,36 @@
   <section class="lyrics-area">
     <div class="lyrics-sheet glass">
 
-      <button id="editToggle" class="edit-btn hidden">✎</button>
-
       <div class="field">
         <div class="placeholder" id="titlePh">Title</div>
         <div id="title" class="title" contenteditable="true"></div>
       </div>
 
-      <div class="field">
-        <div class="placeholder" id="lyricsPh">Type your lyrics here…</div>
-        <div id="lyrics" class="lyrics" contenteditable="true"></div>
-      </div>
+      <div id="lyrics" class="lyrics" contenteditable="true"></div>
 
     </div>
   </section>
 
   <!-- ANALYSIS PANEL -->
   <aside class="analysis-panel glass">
-    <div class="panel-header">Analysis</div>
+    <div id="resizeHandle"></div>
 
-    <div id="categories" class="categories"></div>
+    <div class="panel-header">Inspector</div>
 
-    <button id="analyzeBtn" class="analyze-btn disabled">
+    <div id="panelContent" class="panel-content">
+      <div class="empty-state">
+        Select a line to see suggestions or explanation.
+      </div>
+    </div>
+
+    <button id="actionBtn" class="analyze-btn disabled">
       Analyze
     </button>
   </aside>
 
 </main>
 
-<!-- PUTER -->
 <script src="https://js.puter.com/v2/"></script>
-
 <script src="context.js"></script>
 <script src="app.js"></script>
 </body>

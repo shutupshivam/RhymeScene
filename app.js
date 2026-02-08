@@ -3,23 +3,20 @@ const app = document.getElementById("app");
 
 const signinBtn = document.getElementById("signinBtn");
 const newUserBtn = document.getElementById("newUserBtn");
-
-const modal = document.getElementById("infoModal");
+const drawer = document.getElementById("newUserInfo");
 
 const accountBtn = document.getElementById("accountBtn");
 const accountMenu = document.getElementById("accountMenu");
-const toggleTheme = document.getElementById("toggleTheme");
-const logoutBtn = document.getElementById("logoutBtn");
 
-// ---------- VIEW ----------
+// ---------- VIEW SWITCH ----------
 function showApp() {
-  home.classList.add("hidden");
-  app.classList.remove("hidden");
+  home.classList.remove("active");
+  app.classList.add("active");
 }
 
 function showHome() {
-  app.classList.add("hidden");
-  home.classList.remove("hidden");
+  app.classList.remove("active");
+  home.classList.add("active");
 }
 
 // ---------- AUTH ----------
@@ -29,41 +26,30 @@ signinBtn.onclick = async () => {
     return;
   }
 
-  // CONFIRM EXISTING ACCOUNT ONLY
   try {
     await puter.auth.signIn();
     if (checkAuth()) showApp();
-  } catch {
-    // do nothing
-  }
+  } catch {}
 };
 
 newUserBtn.onclick = () => {
-  modal.classList.remove("hidden");
+  drawer.style.display =
+    drawer.style.display === "block" ? "none" : "block";
 };
 
-// ---------- MODAL ----------
-window.closeModal = () => {
-  modal.classList.add("hidden");
+// ---------- DRAWER ----------
+window.closeDrawer = () => {
+  drawer.style.display = "none";
 };
 
 window.goToPuter = () => {
   window.location.href = "https://puter.com";
 };
 
-// ---------- ACCOUNT MENU ----------
+// ---------- ACCOUNT ----------
 accountBtn.onclick = () => {
-  accountMenu.classList.toggle("hidden");
-};
-
-toggleTheme.onclick = () => {
-  appState.theme = appState.theme === "dark" ? "light" : "dark";
-  document.body.className = appState.theme;
-  localStorage.setItem("theme", appState.theme);
-};
-
-logoutBtn.onclick = () => {
-  alert("Log out from Puter.com");
+  accountMenu.style.display =
+    accountMenu.style.display === "block" ? "none" : "block";
 };
 
 // ---------- INIT ----------

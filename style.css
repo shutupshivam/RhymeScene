@@ -1,40 +1,153 @@
-.home-actions {
-  display: flex;
-  gap: 12px;
+* {
+  box-sizing: border-box;
 }
 
-.secondary {
-  padding: 14px 22px;
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system;
+  background: #0b0b0c;
+  color: #eaeaea;
+}
+
+/* Views */
+.view {
+  min-height: 100vh;
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+/* HOME */
+.home-wrap {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.logo {
+  font-size: 52px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.tagline {
+  opacity: 0.6;
+  margin-bottom: 32px;
+}
+
+.home-actions {
+  display: flex;
+  gap: 14px;
+}
+
+/* Buttons */
+.btn {
   border-radius: 14px;
-  border: 1px solid;
-  background: none;
+  padding: 14px 24px;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+}
+
+.btn.primary {
+  background: #6cf2c2;
+  color: #0b0b0c;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: #eaeaea;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.btn.small {
+  padding: 10px 16px;
+  font-size: 13px;
+}
+
+/* Drawer */
+.info-drawer {
+  max-width: 420px;
+  margin-top: 24px;
+  padding: 18px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  display: none;
+}
+
+.drawer-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.drawer-footnote {
+  font-size: 12px;
+  opacity: 0.5;
+  margin-top: 12px;
+}
+
+/* TOPBAR */
+.topbar {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+}
+
+.brand {
+  flex: 1;
+  opacity: 0.6;
+}
+
+.account-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.3);
   cursor: pointer;
 }
 
-/* MODAL */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
+/* Account menu */
+.account-menu {
+  position: absolute;
+  top: 56px;
+  right: 18px;
+  background: #121214;
+  border-radius: 12px;
+  padding: 6px;
+  display: none;
+}
+
+.account-menu button {
+  width: 100%;
+  padding: 10px;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* WORKSPACE */
+.workspace {
   display: flex;
   justify-content: center;
-  align-items: center;
+  padding: 48px 24px;
 }
 
-.modal-box {
-  max-width: 420px;
-  padding: 28px;
-  border-radius: 18px;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.modal-footnote {
-  font-size: 12px;
-  opacity: 0.6;
-  margin-top: 16px;
+/* LYRICS SHEET */
+.lyrics-sheet {
+  max-width: 720px;
+  width: 100%;
+  font-size: 22px;
+  line-height: 1.7;
+  outline: none;
+  white-space: pre-wrap;
 }

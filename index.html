@@ -4,84 +4,94 @@
   <meta charset="UTF-8" />
   <title>Rhyme Scene</title>
 
-  <script src="https://js.puter.com/v2/"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="animations.css">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="animations.css" />
 </head>
 
-<body class="dark">
-
-<!-- HOME -->
-<section id="home" class="view active">
-  <div class="home-wrap fade-in">
-
-    <h1 class="logo">Rhyme Scene</h1>
-    <p class="tagline">A quiet place to write better lyrics.</p>
-
-    <div class="home-actions">
-      <button id="signinBtn" class="btn primary">Sign in</button>
-      <button id="newUserBtn" class="btn ghost">New user</button>
-    </div>
-
-    <!-- Soft explanation drawer -->
-    <div id="newUserInfo" class="info-drawer">
-      <p>
-        Rhyme Scene uses your existing Puter account.
-        New accounts must be created on Puter first.
-      </p>
-
-      <p>
-        Clicking “Sign in” without an account creates a temporary
-        account with no email, which causes verification issues.
-      </p>
-
-      <div class="drawer-actions">
-        <button onclick="goToPuter()" class="btn primary small">
-          Go to Puter
-        </button>
-        <button onclick="closeDrawer()" class="btn ghost small">
-          Got it
-        </button>
-      </div>
-
-      <p class="drawer-footnote">
-        If you already clicked Sign in by mistake,
-        clear Puter cookies and reload.
-      </p>
-    </div>
-
-  </div>
-</section>
+<body>
 
 <!-- APP -->
-<section id="app" class="view">
+<div id="app">
 
-  <header class="topbar slide-down">
-    <span class="brand">Rhyme Scene</span>
+  <!-- TOP BAR -->
+  <header class="topbar glass slide-down">
+    <div class="categories">
+      <div class="chip active">Word</div>
+      <div class="chip">Rhyme</div>
+      <div class="chip">Flow</div>
+      <div class="chip">Imagery</div>
+      <div class="chip">Emotion</div>
+      <div class="chip more">More</div>
+    </div>
 
-    <button id="accountBtn" class="account-dot"></button>
-
-    <div id="accountMenu" class="account-menu">
-      <button id="toggleTheme">Toggle theme</button>
-      <button id="logoutBtn">Log out</button>
+    <div class="actions">
+      <button id="analyzeBtn" class="btn analyze disabled" disabled>
+        Analyze
+      </button>
+      <button id="editBtn" class="btn ghost">
+        Edit
+      </button>
+      <button id="settingsBtn" class="icon-btn">
+        ⚙︎
+      </button>
     </div>
   </header>
 
+  <!-- SETTINGS PANEL -->
+  <div id="settingsPanel" class="settings glass fade-in">
+    <h4>Settings</h4>
+
+    <label>
+      Theme
+      <select id="themeSelect">
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+      </select>
+    </label>
+
+    <label>
+      Text size
+      <input type="range" id="fontSize" min="16" max="24" value="18" />
+    </label>
+
+    <label>
+      Line spacing
+      <input type="range" id="lineHeight" min="1.4" max="2" step="0.1" value="1.7" />
+    </label>
+  </div>
+
+  <!-- WORKSPACE -->
   <main class="workspace fade-in">
 
-    <div
-      id="lyricsSheet"
-      class="lyrics-sheet"
-      contenteditable="true"
-      spellcheck="false"
-    >
-Write your lyrics here…
+    <div class="sheet glass">
+
+      <!-- TITLE -->
+      <div class="field title-wrap">
+        <div class="placeholder" id="titlePlaceholder">Title</div>
+        <div id="title" class="title" contenteditable="true"></div>
+      </div>
+
+      <!-- LYRICS -->
+      <div class="field lyrics-wrap">
+        <div class="placeholder" id="lyricsPlaceholder">
+          Type your lyrics here…
+        </div>
+        <div
+          id="lyrics"
+          class="lyrics"
+          contenteditable="true"
+          spellcheck="false"
+        ></div>
+      </div>
+
     </div>
 
   </main>
 
-</section>
+</div>
 
 <script src="context.js"></script>
 <script src="app.js"></script>

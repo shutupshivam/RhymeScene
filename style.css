@@ -4,74 +4,113 @@
 
 body {
   margin: 0;
-  background: #0b0b0c;
-  color: #eaeaea;
   font-family: Inter, system-ui, -apple-system;
+  transition: background 0.3s, color 0.3s;
 }
 
-.container {
-  max-width: 900px;
-  margin: 80px auto;
-  padding: 0 24px;
+/* Views */
+.view {
+  min-height: 100vh;
 }
 
-h1 {
-  font-weight: 400;
-  margin-bottom: 6px;
+.hidden {
+  display: none;
 }
 
-.subtitle {
-  color: #8f8f95;
-  font-size: 14px;
+/* HOME */
+.home-center {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.logo {
+  font-size: 48px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.tagline {
+  font-size: 16px;
   margin-bottom: 28px;
 }
 
-.actions {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-button {
-  padding: 14px 18px;
+.primary {
+  padding: 14px 22px;
   border-radius: 14px;
   border: none;
-  background: #6cf2c2;
-  color: #0b0b0c;
-  font-weight: 500;
+  font-size: 15px;
   cursor: pointer;
 }
 
-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+/* TOP BAR */
+.topbar {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
 }
 
-.status {
-  font-size: 13px;
-  color: #8f8f95;
-  margin-bottom: 20px;
+.spacer {
+  flex: 1;
 }
 
-textarea {
+.account {
+  position: relative;
+}
+
+.account-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+/* Account menu */
+.account-menu {
+  position: absolute;
+  right: 0;
+  top: 42px;
+  min-width: 160px;
+  border-radius: 12px;
+  padding: 6px;
+}
+
+.account-menu button {
   width: 100%;
-  min-height: 220px;
-  background: #121214;
-  color: #eaeaea;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.06);
-  padding: 18px;
-  font-size: 15px;
-  line-height: 1.6;
-  resize: vertical;
+  padding: 10px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
 }
 
-pre {
-  margin-top: 24px;
-  background: #121214;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.06);
-  padding: 18px;
+/* WORKSPACE */
+.workspace {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  height: calc(100vh - 56px);
+}
+
+/* Lyrics Sheet */
+.lyrics-sheet {
+  padding: 48px;
+  font-size: 20px;
+  line-height: 1.7;
+  outline: none;
   white-space: pre-wrap;
-  line-height: 1.6;
+}
+
+/* Side Panel */
+.side-panel {
+  border-left: 1px solid;
+  padding: 24px;
+}
+
+.panel-placeholder {
+  opacity: 0.4;
 }

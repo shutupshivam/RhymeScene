@@ -1,0 +1,48 @@
+body.dark {
+  background: #0b0b0c;
+  color: #eaeaea;
+}
+
+body.dark .primary {
+  background: #6cf2c2;
+  color: #0b0b0c;
+}
+
+body.dark .account-btn {
+  background: #1a1a1c;
+  color: #eaeaea;
+}
+
+body.dark .account-menu {
+  background: #121214;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+body.dark .side-panel {
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* LIGHT */
+body.light {
+  background: #fafafa;
+  color: #111;
+}
+
+body.light .primary {
+  background: #111;
+  color: #fff;
+}
+
+body.light .account-btn {
+  background: #ddd;
+  color: #111;
+}
+
+body.light .account-menu {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+body.light .side-panel {
+  border-color: rgba(0,0,0,0.1);
+}

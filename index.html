@@ -2,38 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Lyric Assistant</title>
+  <title>Rhyme Scene</title>
 
-  <!-- Puter SDK (requires https / localhost) -->
+  <!-- Puter SDK -->
   <script src="https://js.puter.com/v2/"></script>
 
   <!-- Styles -->
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="theme.css">
 </head>
-<body>
+<body class="dark">
 
-  <main class="container">
-    <h1>Lyric Assistant</h1>
-    <p class="subtitle">AI-powered songwriting helper</p>
+<!-- HOME / SIGN IN -->
+<section id="home" class="view">
+  <div class="home-center">
+    <h1 class="logo">Rhyme Scene</h1>
+    <p class="tagline">A quiet place to write better lyrics.</p>
 
-    <div class="actions">
-      <button id="signinBtn">Sign in to AI</button>
-      <button id="analyzeBtn" disabled>Analyze Lyrics</button>
+    <button id="signinBtn" class="primary">Sign in</button>
+
+    <p id="homeStatus" class="muted"></p>
+  </div>
+</section>
+
+<!-- APP -->
+<section id="app" class="view hidden">
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="spacer"></div>
+
+    <div class="account">
+      <button id="accountBtn" class="account-btn">●</button>
+
+      <div id="accountMenu" class="account-menu hidden">
+        <button id="toggleTheme">Toggle theme</button>
+        <button id="logoutBtn">Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main workspace -->
+  <main class="workspace">
+
+    <!-- Lyrics Sheet -->
+    <div class="lyrics-sheet" contenteditable="true" id="lyricsSheet">
+      Write your lyrics here…
     </div>
 
-    <div id="status" class="status">Not signed in.</div>
+    <!-- Side panel (empty for now) -->
+    <aside class="side-panel">
+      <div class="panel-placeholder">
+        Analysis will appear here.
+      </div>
+    </aside>
 
-    <textarea
-      id="lyrics"
-      placeholder="Paste your lyrics here…"
-    ></textarea>
-
-    <pre id="output"></pre>
   </main>
 
-  <!-- App logic -->
-  <script src="context.js"></script>
-  <script src="script.js"></script>
+</section>
 
+<script src="context.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

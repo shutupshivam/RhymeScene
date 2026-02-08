@@ -1,22 +1,20 @@
-// Global app state
 window.appState = {
   signedIn: false,
-  user: null
+  user: null,
+  theme: localStorage.getItem("theme") || "dark"
 };
 
-// Safe auth check
-window.checkAuthState = function () {
+document.body.className = appState.theme;
+
+window.checkAuth = () => {
   try {
     if (puter.auth.isSignedIn()) {
-      const user = puter.auth.getUser();
       appState.signedIn = true;
-      appState.user = user;
-      return user;
+      appState.user = puter.auth.getUser();
+      return true;
     }
-  } catch (e) {
-    // ignored
-  }
+  } catch {}
   appState.signedIn = false;
   appState.user = null;
-  return null;
+  return false;
 };

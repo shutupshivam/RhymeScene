@@ -1,9 +1,34 @@
-body.dark .modal-box {
-  background: #121214;
+body.dark {
+  background: radial-gradient(circle at top, #151518, #0b0b0c);
   color: #eaeaea;
 }
 
-body.light .modal-box {
-  background: #ffffff;
+body.dark .glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+body.dark .btn.analyze:not(.disabled) {
+  background: linear-gradient(135deg, #6cf2c2, #5bd6ff);
+  color: #0b0b0c;
+  box-shadow: 0 0 20px rgba(108,242,194,0.5);
+}
+
+body.light {
+  background: #f4f4f6;
   color: #111;
+}
+
+body.light .glass {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+body.light .btn.analyze:not(.disabled) {
+  background: linear-gradient(135deg, #222, #444);
+  color: white;
 }

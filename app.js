@@ -1,60 +1,78 @@
-const home = document.getElementById("home");
-const app = document.getElementById("app");
+const title = document.getElementById("title");
+const lyrics = document.getElementById("lyrics");
 
-const signinBtn = document.getElementById("signinBtn");
-const newUserBtn = document.getElementById("newUserBtn");
-const drawer = document.getElementById("newUserInfo");
+const titlePh = document.getElementById("titlePlaceholder");
+const lyricsPh = document.getElementById("lyricsPlaceholder");
 
-const accountBtn = document.getElementById("accountBtn");
-const accountMenu = document.getElementById("accountMenu");
+const analyzeBtn = document.getElementById("analyzeBtn");
+const editBtn = document.getElementById("editBtn");
 
-// ---------- VIEW SWITCH ----------
-function showApp() {
-  home.classList.remove("active");
-  app.classList.add("active");
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsPanel = document.getElementById("settingsPanel");
+
+const themeSelect = document.getElementById("themeSelect");
+const fontSize = document.getElementById("fontSize");
+const lineHeight = document.getElementById("lineHeight");
+
+/* PLACEHOLDERS */
+function updatePlaceholders() {
+  titlePh.style.display = title.textContent.trim() ? "none" : "block";
+  lyricsPh.style.display = lyrics.textContent.trim() ? "none" : "block";
 }
+title.addEventListener("input", updatePlaceholders);
+lyrics.addEventListener("input", updatePlaceholders);
+updatePlaceholders();
 
-function showHome() {
-  app.classList.remove("active");
-  home.classList.add("active");
+/* ANALYZE ENABLE */
+function updateAnalyzeState() {
+  const hasText = lyrics.textContent.trim().length > 0;
+  analyzeBtn.disabled = !hasText;
+  analyzeBtn.classList.toggle("disabled", !hasText);
 }
+lyrics.addEventListener("input", updateAnalyzeState);
+updateAnalyzeState();
 
-// ---------- AUTH ----------
-signinBtn.onclick = async () => {
-  if (checkAuth()) {
-    showApp();
-    return;
+/* EDIT / ANALYZE */
+analyzeBtn.onclick = () => {
+  if (analyzeBtn.disabled) return;
+  state.locked = true;
+  title.contentEditable = false;
+  lyrics.contentEditable = false;
+};
+
+editBtn.onclick = () => {
+  state.locked = false;
+  title.contentEditable = true;
+  lyrics.contentEditable = true;
+};
+
+/* SETTINGS */
+settingsBtn.onclick = () => {
+  settingsPanel.style.display =
+    settingsPanel.style.display === "block" ? "none" : "block";
+};
+
+themeSelect.value = state.theme;
+themeSelect.onchange = e => {
+  state.theme = e.target.value;
+  document.body.className = state.theme;
+  localStorage.setItem("theme", state.theme);
+};
+
+fontSize.oninput = e => {
+  lyrics.style.fontSize = e.target.value + "px";
+};
+
+lineHeight.oninput = e => {
+  lyrics.style.lineHeight = e.target.value;
+};
+
+/* KEYBOARD SHORTCUTS */
+document.addEventListener("keydown", e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+    if (!analyzeBtn.disabled) analyzeBtn.click();
   }
-
-  try {
-    await puter.auth.signIn();
-    if (checkAuth()) showApp();
-  } catch {}
-};
-
-newUserBtn.onclick = () => {
-  drawer.style.display =
-    drawer.style.display === "block" ? "none" : "block";
-};
-
-// ---------- DRAWER ----------
-window.closeDrawer = () => {
-  drawer.style.display = "none";
-};
-
-window.goToPuter = () => {
-  window.location.href = "https://puter.com";
-};
-
-// ---------- ACCOUNT ----------
-accountBtn.onclick = () => {
-  accountMenu.style.display =
-    accountMenu.style.display === "block" ? "none" : "block";
-};
-
-// ---------- INIT ----------
-if (checkAuth()) {
-  showApp();
-} else {
-  showHome();
-}
+  if (e.key === "Escape") {
+    editBtn.click();
+  }
+});

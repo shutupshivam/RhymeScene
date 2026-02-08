@@ -7,7 +7,9 @@ const categoriesEl = document.getElementById("categories");
 const titlePh = document.getElementById("titlePh");
 const lyricsPh = document.getElementById("lyricsPh");
 
-/* placeholders */
+let analyzed = false;
+
+/* PLACEHOLDERS */
 function updatePlaceholders() {
   titlePh.style.display = title.textContent.trim() ? "none" : "block";
   lyricsPh.style.display = lyrics.textContent.trim() ? "none" : "block";
@@ -16,23 +18,41 @@ title.addEventListener("input", updatePlaceholders);
 lyrics.addEventListener("input", updatePlaceholders);
 updatePlaceholders();
 
-/* enable analyze */
+/* ENABLE / RESET ANALYZE */
 lyrics.addEventListener("input", () => {
   analyzeBtn.classList.toggle(
     "disabled",
     lyrics.textContent.trim().length === 0
   );
+
+  if (analyzed) {
+    analyzeBtn.textContent = "Analyze";
+    analyzeBtn.disabled = false;
+    analyzed = false;
+  }
 });
 
 /* GPT-5.2 */
-async function analyzeLyrics(text) {
+async function runAI(lyricsText) {
   const prompt = `
-Return ONLY valid JSON with categories:
-Word, Rhyme, Flow, Emotion, Imagery, Cliche, Overview.
-Short bullet points only.
+Return ONLY valid JSON.
+
+{
+  "Word": [{ "target": "", "suggestions": [] }],
+  "Rhyme": [{ "line": "", "suggestions": [] }],
+  "Flow": [],
+  "Emotion": [],
+  "Imagery": [],
+  "Cliché": [],
+  "Overview": []
+}
+
+Rules:
+- No explanations
+- Suggestions only
 
 Lyrics:
-"""${text}"""
+"""${lyricsText}"""
 `;
 
   const res = await puter.ai.chat(prompt, {
@@ -43,51 +63,64 @@ Lyrics:
   return JSON.parse(res);
 }
 
-/* analyze */
+/* RENDER */
+function renderCategories(data) {
+  categoriesEl.innerHTML = "";
+
+  Object.entries(data).forEach(([name, content]) => {
+    const el = document.createElement("div");
+    el.className = "category";
+
+    let html = "";
+
+    if (name === "Word") {
+      html = content.map(item =>
+        `<div><b>${item.target}</b> ${
+          item.suggestions.map(s => `<span class="chip">${s}</span>`).join("")
+        }</div>`
+      ).join("");
+    } 
+    else if (name === "Rhyme") {
+      html = content.map(item =>
+        `<div><i>${item.line}</i><br>${
+          item.suggestions.map(s => `• ${s}`).join("<br>")
+        }</div>`
+      ).join("");
+    } 
+    else {
+      html = content.map(i => `• ${i}`).join("<br>");
+    }
+
+    el.innerHTML = `
+      <div class="category-title">${name}</div>
+      <div class="category-content">${html}</div>
+    `;
+
+    el.onclick = () => el.classList.toggle("expanded");
+
+    categoriesEl.appendChild(el);
+  });
+}
+
+/* ANALYZE */
 analyzeBtn.onclick = async () => {
   if (analyzeBtn.classList.contains("disabled")) return;
 
   analyzeBtn.textContent = "Analyzing…";
   analyzeBtn.disabled = true;
+  analyzed = true;
 
   title.contentEditable = false;
   lyrics.contentEditable = false;
   editToggle.classList.remove("hidden");
 
-  categoriesEl.innerHTML = "";
+  const data = await runAI(lyrics.textContent.trim());
+  renderCategories(data);
 
-  try {
-    const data = await analyzeLyrics(lyrics.textContent.trim());
-
-    Object.entries(data).forEach(([name, items]) => {
-      const el = document.createElement("div");
-      el.className = "category collapsed";
-
-      el.innerHTML = `
-        <div class="category-title">${name}</div>
-        <div class="category-content">
-          ${Array.isArray(items)
-            ? items.map(i => `• ${i}`).join("<br>")
-            : items}
-        </div>
-      `;
-
-      el.onclick = () => {
-        el.classList.toggle("expanded");
-        el.classList.toggle("collapsed");
-      };
-
-      categoriesEl.appendChild(el);
-    });
-
-    analyzeBtn.textContent = "Analyzed";
-  } catch (err) {
-    analyzeBtn.textContent = "Error";
-    console.error(err);
-  }
+  analyzeBtn.textContent = "Analyzed";
 };
 
-/* edit */
+/* EDIT */
 editToggle.onclick = () => {
   title.contentEditable = true;
   lyrics.contentEditable = true;

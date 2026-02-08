@@ -17,7 +17,18 @@
     <span class="logo-dot"></span>
     Rhyme Scene
   </div>
-  <button class="icon-btn">⚙︎</button>
+
+  <!-- TEXT SETTINGS -->
+  <div class="text-controls">
+    <label>
+      A
+      <input id="fontSize" type="range" min="14" max="22" value="16">
+    </label>
+    <label>
+      ⇕
+      <input id="lineHeight" type="range" min="1.2" max="2" step="0.1" value="1.45">
+    </label>
+  </div>
 </header>
 
 <main class="layout">
@@ -35,7 +46,7 @@
 
       <div class="field">
         <div class="placeholder" id="lyricsPh">Type your lyrics here…</div>
-        <div id="lyrics" class="lyrics" contenteditable="true" spellcheck="false"></div>
+        <div id="lyrics" class="lyrics" contenteditable="true"></div>
       </div>
 
     </div>
@@ -43,7 +54,7 @@
 
   <!-- ANALYSIS PANEL -->
   <aside class="analysis-panel glass">
-    <div class="panel-header">AI Analysis</div>
+    <div class="panel-header">Analysis</div>
 
     <div id="categories" class="categories"></div>
 
@@ -54,7 +65,9 @@
 
 </main>
 
+<!-- ✅ REQUIRED FOR GPT-5.2 -->
 <script src="https://js.puter.com/v2/"></script>
+
 <script src="context.js"></script>
 <script src="app.js"></script>
 </body>

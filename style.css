@@ -1,13 +1,11 @@
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
   font-family: Inter, system-ui, -apple-system;
 }
 
-/* TOP BAR */
+/* TOP */
 .topbar {
   height: 60px;
   padding: 0 24px;
@@ -28,6 +26,17 @@ body {
   height: 10px;
   border-radius: 50%;
   background: #ff7a18;
+}
+
+/* TEXT CONTROLS */
+.text-controls {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.text-controls input {
+  width: 80px;
 }
 
 /* LAYOUT */
@@ -63,13 +72,9 @@ body {
   cursor: pointer;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
-.field {
-  position: relative;
-}
+.field { position: relative; }
 
 .title {
   font-size: 22px;
@@ -91,7 +96,7 @@ body {
   opacity: 0.35;
 }
 
-/* ANALYSIS PANEL */
+/* ANALYSIS */
 .analysis-panel {
   padding: 28px;
   display: flex;

@@ -1,0 +1,147 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system;
+  transition: background 0.3s, color 0.3s;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* TOP BAR */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.categories {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+}
+
+.chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.25s ease;
+}
+
+.chip.active {
+  opacity: 1;
+}
+
+.chip.more {
+  opacity: 0.4;
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.25s ease;
+}
+
+.btn.ghost {
+  background: transparent;
+}
+
+.btn.analyze {
+  font-weight: 500;
+}
+
+.btn.analyze.disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* WORKSPACE */
+.workspace {
+  display: flex;
+  justify-content: center;
+  padding: 48px 16px;
+}
+
+/* SHEET */
+.sheet {
+  width: 100%;
+  max-width: 760px;
+  padding: 48px;
+  border-radius: 20px;
+}
+
+/* FIELDS */
+.field {
+  position: relative;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 500;
+  outline: none;
+}
+
+.lyrics {
+  margin-top: 28px;
+  font-size: 18px;
+  line-height: 1.7;
+  outline: none;
+  white-space: pre-wrap;
+}
+
+/* PLACEHOLDERS */
+.placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+/* SETTINGS */
+.settings {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  width: 260px;
+  padding: 18px;
+  border-radius: 18px;
+  display: none;
+}
+
+.settings h4 {
+  margin-top: 0;
+}
+
+.settings label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}

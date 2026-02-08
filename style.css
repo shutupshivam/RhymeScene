@@ -5,42 +5,26 @@ body {
   font-family: Inter, system-ui, -apple-system;
 }
 
-/* TOP */
+/* TOP BAR */
 .topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 60px;
   padding: 0 24px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  z-index: 100;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 600;
-}
-
-.logo-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #ff7a18;
-}
-
-/* TEXT CONTROLS */
-.text-controls {
-  display: flex;
-  gap: 12px;
-  font-size: 12px;
-}
-
-.text-controls input {
-  width: 80px;
+.logo img {
+  height: 28px;
 }
 
 /* LAYOUT */
 .layout {
+  margin-top: 60px;
   display: grid;
   grid-template-columns: 1fr 360px;
   height: calc(100vh - 60px);
@@ -96,64 +80,76 @@ body {
   opacity: 0.35;
 }
 
-/* ANALYSIS */
+/* ANALYSIS PANEL */
 .analysis-panel {
-  padding: 28px;
+  position: sticky;
+  top: 60px;
+  height: calc(100vh - 60px);
+  padding: 24px;
   display: flex;
   flex-direction: column;
 }
 
 .panel-header {
   font-size: 14px;
-  opacity: 0.7;
+  opacity: 0.6;
   margin-bottom: 12px;
 }
 
 .categories {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
   overflow-y: auto;
+  padding-bottom: 80px;
 }
 
+/* CATEGORY */
 .category {
-  padding: 12px 16px;
-  border-radius: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   cursor: pointer;
 }
 
-.category.collapsed {
-  opacity: 0.45;
-}
-
-.category.expanded {
-  opacity: 1;
-}
-
 .category-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
+  opacity: 0.6;
+}
+
+.category.expanded .category-title {
+  opacity: 1;
+  color: #ff7a18;
 }
 
 .category-content {
   display: none;
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: 13px;
+  opacity: 0.85;
 }
 
 .category.expanded .category-content {
   display: block;
 }
 
-/* ANALYZE */
+/* CHIPS */
+.chip {
+  display: inline-block;
+  margin: 4px 6px 0 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: rgba(255,255,255,0.08);
+}
+
+/* ANALYZE BUTTON */
 .analyze-btn {
+  position: sticky;
+  bottom: 0;
   height: 52px;
   border-radius: 16px;
   border: none;
   font-size: 15px;
   cursor: pointer;
-  margin-top: 16px;
 }
 
 .analyze-btn.disabled {

@@ -4,10 +4,10 @@ const analyzeBtn = document.getElementById("analyzeBtn");
 const editToggle = document.getElementById("editToggle");
 const categoriesEl = document.getElementById("categories");
 
-const titlePh = document.getElementById("titlePlaceholder");
-const lyricsPh = document.getElementById("lyricsPlaceholder");
+const titlePh = document.getElementById("titlePh");
+const lyricsPh = document.getElementById("lyricsPh");
 
-/* PLACEHOLDERS */
+/* placeholders */
 function updatePlaceholders() {
   titlePh.style.display = title.textContent.trim() ? "none" : "block";
   lyricsPh.style.display = lyrics.textContent.trim() ? "none" : "block";
@@ -16,7 +16,7 @@ title.addEventListener("input", updatePlaceholders);
 lyrics.addEventListener("input", updatePlaceholders);
 updatePlaceholders();
 
-/* ENABLE ANALYZE */
+/* enable analyze */
 lyrics.addEventListener("input", () => {
   analyzeBtn.classList.toggle(
     "disabled",
@@ -24,18 +24,12 @@ lyrics.addEventListener("input", () => {
   );
 });
 
-/* GPT-5.2 ANALYSIS */
-async function runAIAnalysis(text) {
+/* GPT-5.2 */
+async function analyzeLyrics(text) {
   const prompt = `
-Analyze the song lyrics below and return ONLY valid JSON.
-
-Categories:
-Word, Rhyme, Flow, Emotion, Imagery, Cliché, Overview
-
-Rules:
-- Each category must exist
-- Short, useful bullet points
-- No long explanations
+Return ONLY valid JSON with categories:
+Word, Rhyme, Flow, Emotion, Imagery, Cliche, Overview.
+Short bullet points only.
 
 Lyrics:
 """${text}"""
@@ -49,7 +43,7 @@ Lyrics:
   return JSON.parse(res);
 }
 
-/* ANALYZE */
+/* analyze */
 analyzeBtn.onclick = async () => {
   if (analyzeBtn.classList.contains("disabled")) return;
 
@@ -63,7 +57,7 @@ analyzeBtn.onclick = async () => {
   categoriesEl.innerHTML = "";
 
   try {
-    const data = await runAIAnalysis(lyrics.textContent.trim());
+    const data = await analyzeLyrics(lyrics.textContent.trim());
 
     Object.entries(data).forEach(([name, items]) => {
       const el = document.createElement("div");
@@ -73,7 +67,7 @@ analyzeBtn.onclick = async () => {
         <div class="category-title">${name}</div>
         <div class="category-content">
           ${Array.isArray(items)
-            ? items.map(i => `<div>• ${i}</div>`).join("")
+            ? items.map(i => `• ${i}`).join("<br>")
             : items}
         </div>
       `;
@@ -87,13 +81,13 @@ analyzeBtn.onclick = async () => {
     });
 
     analyzeBtn.textContent = "Analyzed";
-  } catch (e) {
-    analyzeBtn.textContent = "Analyze failed";
-    console.error(e);
+  } catch (err) {
+    analyzeBtn.textContent = "Error";
+    console.error(err);
   }
 };
 
-/* EDIT */
+/* edit */
 editToggle.onclick = () => {
   title.contentEditable = true;
   lyrics.contentEditable = true;

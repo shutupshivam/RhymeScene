@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lyric Assistant</title>
+
+  <!-- Puter SDK (requires https / localhost) -->
+  <script src="https://js.puter.com/v2/"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="container">
+    <h1>Lyric Assistant</h1>
+    <p class="subtitle">AI-powered songwriting helper</p>
+
+    <div class="actions">
+      <button id="signinBtn">Sign in to AI</button>
+      <button id="analyzeBtn" disabled>Analyze Lyrics</button>
+    </div>
+
+    <div id="status" class="status">Not signed in.</div>
+
+    <textarea
+      id="lyrics"
+      placeholder="Paste your lyrics here…"
+    ></textarea>
+
+    <pre id="output"></pre>
+  </main>
+
+  <!-- App logic -->
+  <script src="context.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>

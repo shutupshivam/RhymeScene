@@ -1,3 +1,4 @@
 window.state = {
-  analyzed: false
+  analyzed: false,
+  locked: false
 };

@@ -1,11 +1,7 @@
-.glass {
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+.category {
+  transition: background 0.3s, box-shadow 0.3s, opacity 0.3s;
 }
 
 .analyze-btn:not(.disabled):hover {
   transform: translateY(-1px);
-}
-
-.edit-toggle:hover {
-  background: rgba(255,255,255,0.16);
 }

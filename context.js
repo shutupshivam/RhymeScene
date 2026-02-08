@@ -1,11 +1,6 @@
-window.appState = {
-  signedIn: false
+window.state = {
+  locked: false,
+  theme: localStorage.getItem("theme") || "dark"
 };
 
-window.checkAuth = () => {
-  try {
-    return puter.auth.isSignedIn();
-  } catch {
-    return false;
-  }
-};
+document.body.className = state.theme;

@@ -5,7 +5,7 @@ const titlePh = document.getElementById("titlePlaceholder");
 const lyricsPh = document.getElementById("lyricsPlaceholder");
 
 const analyzeBtn = document.getElementById("analyzeBtn");
-const editBtn = document.getElementById("editBtn");
+const editToggle = document.getElementById("editToggle");
 
 const settingsBtn = document.getElementById("settingsBtn");
 const settingsPanel = document.getElementById("settingsPanel");
@@ -24,26 +24,31 @@ lyrics.addEventListener("input", updatePlaceholders);
 updatePlaceholders();
 
 /* ANALYZE ENABLE */
-function updateAnalyzeState() {
+function updateAnalyze() {
   const hasText = lyrics.textContent.trim().length > 0;
-  analyzeBtn.disabled = !hasText;
   analyzeBtn.classList.toggle("disabled", !hasText);
 }
-lyrics.addEventListener("input", updateAnalyzeState);
-updateAnalyzeState();
+lyrics.addEventListener("input", updateAnalyze);
+updateAnalyze();
 
-/* EDIT / ANALYZE */
+/* ANALYZE */
 analyzeBtn.onclick = () => {
-  if (analyzeBtn.disabled) return;
+  if (analyzeBtn.classList.contains("disabled")) return;
+
   state.locked = true;
   title.contentEditable = false;
   lyrics.contentEditable = false;
+
+  editToggle.classList.remove("hidden");
 };
 
-editBtn.onclick = () => {
+/* EDIT */
+editToggle.onclick = () => {
   state.locked = false;
   title.contentEditable = true;
   lyrics.contentEditable = true;
+
+  editToggle.classList.add("hidden");
 };
 
 /* SETTINGS */
@@ -67,12 +72,12 @@ lineHeight.oninput = e => {
   lyrics.style.lineHeight = e.target.value;
 };
 
-/* KEYBOARD SHORTCUTS */
+/* KEYBOARD */
 document.addEventListener("keydown", e => {
   if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
-    if (!analyzeBtn.disabled) analyzeBtn.click();
+    analyzeBtn.click();
   }
   if (e.key === "Escape") {
-    editBtn.click();
+    editToggle.click();
   }
 });

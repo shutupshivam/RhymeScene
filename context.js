@@ -1,6 +1,3 @@
 window.state = {
-  locked: false,
-  theme: localStorage.getItem("theme") || "dark"
+  locked: false
 };
-
-document.body.className = state.theme;

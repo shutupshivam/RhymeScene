@@ -1,116 +1,40 @@
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Inter, system-ui, -apple-system;
-  transition: background 0.3s, color 0.3s;
-}
-
-/* Views */
-.view {
-  min-height: 100vh;
-}
-
-.hidden {
-  display: none;
-}
-
-/* HOME */
-.home-center {
-  height: 100vh;
+.home-actions {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  gap: 12px;
 }
 
-.logo {
-  font-size: 48px;
-  font-weight: 500;
-  margin-bottom: 8px;
-}
-
-.tagline {
-  font-size: 16px;
-  margin-bottom: 28px;
-}
-
-.primary {
+.secondary {
   padding: 14px 22px;
   border-radius: 14px;
-  border: none;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-/* TOP BAR */
-.topbar {
-  height: 56px;
-  display: flex;
-  align-items: center;
-  padding: 0 18px;
-}
-
-.spacer {
-  flex: 1;
-}
-
-.account {
-  position: relative;
-}
-
-.account-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-}
-
-/* Account menu */
-.account-menu {
-  position: absolute;
-  right: 0;
-  top: 42px;
-  min-width: 160px;
-  border-radius: 12px;
-  padding: 6px;
-}
-
-.account-menu button {
-  width: 100%;
-  padding: 10px;
+  border: 1px solid;
   background: none;
-  border: none;
-  text-align: left;
   cursor: pointer;
 }
 
-/* WORKSPACE */
-.workspace {
-  display: grid;
-  grid-template-columns: 1fr 360px;
-  height: calc(100vh - 56px);
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Lyrics Sheet */
-.lyrics-sheet {
-  padding: 48px;
-  font-size: 20px;
-  line-height: 1.7;
-  outline: none;
-  white-space: pre-wrap;
+.modal-box {
+  max-width: 420px;
+  padding: 28px;
+  border-radius: 18px;
 }
 
-/* Side Panel */
-.side-panel {
-  border-left: 1px solid;
-  padding: 24px;
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
 }
 
-.panel-placeholder {
-  opacity: 0.4;
+.modal-footnote {
+  font-size: 12px;
+  opacity: 0.6;
+  margin-top: 16px;
 }

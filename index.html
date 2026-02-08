@@ -1,156 +1,61 @@
-* { box-sizing: border-box; }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rhyme Scene</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-body {
-  margin: 0;
-  font-family: Inter, system-ui, -apple-system;
-}
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="animations.css" />
+</head>
 
-.topbar {
-  height: 56px;
-  padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+<body class="dark">
 
-.logo {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  font-weight: 600;
-}
+<header class="topbar glass">
+  <div class="logo">
+    <span class="logo-dot"></span>
+    Rhyme Scene
+  </div>
+  <button class="icon-btn">⚙︎</button>
+</header>
 
-.logo-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #ff7a18;
-}
+<main class="layout">
 
-.icon-btn {
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-}
+  <!-- LYRICS -->
+  <section class="lyrics-area">
+    <div class="lyrics-sheet glass">
 
-.main {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  height: calc(100vh - 56px);
-}
+      <button id="editToggle" class="edit-btn hidden">✎</button>
 
-/* LYRICS */
-.sheet-wrap {
-  display: flex;
-  justify-content: center;
-  padding: 40px;
-}
+      <div class="field">
+        <div class="placeholder" id="titlePh">Title</div>
+        <div id="title" class="title" contenteditable="true"></div>
+      </div>
 
-.sheet {
-  position: relative;
-  width: 100%;
-  max-width: 720px;
-  padding: 48px;
-  border-radius: 22px;
-}
+      <div class="field">
+        <div class="placeholder" id="lyricsPh">Type your lyrics here…</div>
+        <div id="lyrics" class="lyrics" contenteditable="true" spellcheck="false"></div>
+      </div>
 
-.edit-toggle {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-}
+    </div>
+  </section>
 
-.hidden { display: none; }
+  <!-- ANALYSIS PANEL -->
+  <aside class="analysis-panel glass">
+    <div class="panel-header">AI Analysis</div>
 
-.field { position: relative; }
+    <div id="categories" class="categories"></div>
 
-.title {
-  font-size: 20px;
-  outline: none;
-}
+    <button id="analyzeBtn" class="analyze-btn disabled">
+      Analyze
+    </button>
+  </aside>
 
-.lyrics {
-  margin-top: 24px;
-  font-size: 17px;
-  line-height: 1.5;
-  outline: none;
-  white-space: pre-wrap;
-}
+</main>
 
-.placeholder {
-  position: absolute;
-  pointer-events: none;
-  opacity: 0.4;
-}
-
-/* ANALYSIS PANEL */
-.analysis {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.analysis-header {
-  font-weight: 600;
-  opacity: 0.7;
-}
-
-.categories {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.category {
-  border-radius: 14px;
-  padding: 10px 14px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.category.collapsed {
-  opacity: 0.5;
-}
-
-.category.expanded {
-  opacity: 1;
-}
-
-.category-title {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.category-content {
-  margin-top: 10px;
-  font-size: 13px;
-  display: none;
-}
-
-.category.expanded .category-content {
-  display: block;
-}
-
-.analyze-btn {
-  height: 48px;
-  border-radius: 14px;
-  border: none;
-  font-size: 15px;
-  cursor: pointer;
-  margin-top: 12px;
-  transition: all 0.3s ease;
-}
-
-.analyze-btn.disabled {
-  opacity: 0.4;
-  cursor: default;
-}
+<script src="https://js.puter.com/v2/"></script>
+<script src="context.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

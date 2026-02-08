@@ -1,23 +1,23 @@
 body.dark {
-  background: radial-gradient(circle at top, #181818, #0b0b0c);
+  background: radial-gradient(1200px at top, #1b1b1d, #0b0b0c);
   color: #eaeaea;
 }
 
 .glass {
-  background: rgba(255,255,255,0.06);
-  backdrop-filter: blur(22px);
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(26px);
   box-shadow:
-    0 30px 60px rgba(0,0,0,0.45),
-    inset 0 1px 0 rgba(255,255,255,0.08);
+    0 40px 80px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .category.expanded {
-  background: rgba(255,122,24,0.15);
-  box-shadow: 0 0 18px rgba(255,122,24,0.35);
+  background: rgba(255, 122, 24, 0.18);
+  box-shadow: 0 0 22px rgba(255, 122, 24, 0.45);
 }
 
 .analyze-btn:not(.disabled) {
   background: linear-gradient(135deg, #ff7a18, #ffb347);
   color: #0b0b0c;
-  box-shadow: 0 0 24px rgba(255,122,24,0.6);
+  box-shadow: 0 0 28px rgba(255, 122, 24, 0.65);
 }

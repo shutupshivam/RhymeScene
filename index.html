@@ -6,83 +6,78 @@
 
   <script src="https://js.puter.com/v2/"></script>
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="animations.css">
 </head>
+
 <body class="dark">
 
 <!-- HOME -->
-<section id="home" class="view">
-  <div class="home-center">
+<section id="home" class="view active">
+  <div class="home-wrap fade-in">
+
     <h1 class="logo">Rhyme Scene</h1>
     <p class="tagline">A quiet place to write better lyrics.</p>
 
     <div class="home-actions">
-      <button id="signinBtn" class="primary">Sign in</button>
-      <button id="newUserBtn" class="secondary">New user</button>
+      <button id="signinBtn" class="btn primary">Sign in</button>
+      <button id="newUserBtn" class="btn ghost">New user</button>
     </div>
+
+    <!-- Soft explanation drawer -->
+    <div id="newUserInfo" class="info-drawer">
+      <p>
+        Rhyme Scene uses your existing Puter account.
+        New accounts must be created on Puter first.
+      </p>
+
+      <p>
+        Clicking “Sign in” without an account creates a temporary
+        account with no email, which causes verification issues.
+      </p>
+
+      <div class="drawer-actions">
+        <button onclick="goToPuter()" class="btn primary small">
+          Go to Puter
+        </button>
+        <button onclick="closeDrawer()" class="btn ghost small">
+          Got it
+        </button>
+      </div>
+
+      <p class="drawer-footnote">
+        If you already clicked Sign in by mistake,
+        clear Puter cookies and reload.
+      </p>
+    </div>
+
   </div>
 </section>
 
-<!-- INFO MODAL -->
-<div id="infoModal" class="modal hidden">
-  <div class="modal-box">
-    <h3>New to Rhyme Scene?</h3>
-
-    <p>
-      Rhyme Scene uses your existing Puter account.
-      New accounts must be created directly on Puter.
-    </p>
-
-    <p>
-      If you tap “Sign in” without an account,
-      Puter creates a temporary account with no email.
-      This causes verification issues later.
-    </p>
-
-    <p>
-      To avoid this, create your account first.
-    </p>
-
-    <div class="modal-actions">
-      <button onclick="goToPuter()" class="primary">Go to Puter</button>
-      <button onclick="closeModal()" class="secondary">Got it</button>
-    </div>
-
-    <p class="modal-footnote">
-      If you already clicked “Sign in” by mistake,
-      clear Puter cookies and start again.
-    </p>
-  </div>
-</div>
-
 <!-- APP -->
-<section id="app" class="view hidden">
+<section id="app" class="view">
 
-  <header class="topbar">
-    <div class="spacer"></div>
+  <header class="topbar slide-down">
+    <span class="brand">Rhyme Scene</span>
 
-    <div class="account">
-      <button id="accountBtn" class="account-btn">●</button>
+    <button id="accountBtn" class="account-dot"></button>
 
-      <div id="accountMenu" class="account-menu hidden">
-        <button id="toggleTheme">Toggle theme</button>
-        <button id="logoutBtn">Log out</button>
-      </div>
+    <div id="accountMenu" class="account-menu">
+      <button id="toggleTheme">Toggle theme</button>
+      <button id="logoutBtn">Log out</button>
     </div>
   </header>
 
-  <main class="workspace">
+  <main class="workspace fade-in">
 
-    <div class="lyrics-sheet" contenteditable="true" id="lyricsSheet">
-      Write your lyrics here…
+    <div
+      id="lyricsSheet"
+      class="lyrics-sheet"
+      contenteditable="true"
+      spellcheck="false"
+    >
+Write your lyrics here…
     </div>
-
-    <aside class="side-panel">
-      <div class="panel-placeholder">
-        Analysis will appear here.
-      </div>
-    </aside>
 
   </main>
 

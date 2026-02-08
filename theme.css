@@ -3,7 +3,7 @@ body.dark {
   color: #eaeaea;
 }
 
-body.dark .glass {
+.glass {
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(22px);
   box-shadow:
@@ -11,24 +11,13 @@ body.dark .glass {
     inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
-body.dark .analyze-btn:not(.disabled) {
+.category.expanded {
+  background: rgba(255,122,24,0.15);
+  box-shadow: 0 0 18px rgba(255,122,24,0.35);
+}
+
+.analyze-btn:not(.disabled) {
   background: linear-gradient(135deg, #ff7a18, #ffb347);
   color: #0b0b0c;
-  box-shadow: 0 0 25px rgba(255,122,24,0.6);
-}
-
-body.light {
-  background: #f5f5f7;
-  color: #111;
-}
-
-body.light .glass {
-  background: rgba(255,255,255,0.8);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
-}
-
-body.light .analyze-btn:not(.disabled) {
-  background: linear-gradient(135deg, #ff7a18, #ff9f43);
-  color: white;
+  box-shadow: 0 0 24px rgba(255,122,24,0.6);
 }

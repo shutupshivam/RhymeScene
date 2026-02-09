@@ -28,34 +28,34 @@
       <button id="lockBtn" class="lock-btn hidden">Edit</button>
 
       <div class="field">
-        <div class="placeholder" id="titlePh">Title</div>
+        <div id="titlePh" class="placeholder">Title</div>
         <div id="title" class="title" contenteditable="true"></div>
       </div>
 
-      <div id="lyrics" class="lyrics" contenteditable="true"></div>
+      <div class="field">
+        <div id="lyricsPh" class="placeholder">Type your lyrics here…</div>
+        <div id="lyrics" class="lyrics" contenteditable="true"></div>
+      </div>
 
     </div>
   </section>
 
-  <!-- RESIZE HANDLE -->
+  <!-- RESIZER -->
   <div id="resizeHandle"></div>
 
   <!-- ANALYSIS PANEL -->
   <aside id="analysisPanel" class="analysis-panel glass">
-
-    <!-- LINE ACTION PANEL -->
-    <div id="linePanel" class="line-panel hidden">
-      <div class="line-panel-title">Line Insight</div>
-      <div id="linePanelContent"></div>
+    <div id="lineIsland" class="line-island hidden">
+      <button id="explainLine">Explain</button>
+      <button id="replaceLine">Replace</button>
     </div>
+
+    <div id="linePanel" class="line-panel hidden"></div>
 
     <div class="panel-header">Analysis</div>
     <div id="categories" class="categories"></div>
 
-    <button id="analyzeBtn" class="analyze-btn disabled">
-      Analyze
-    </button>
-
+    <button id="analyzeBtn" class="analyze-btn disabled">Analyze</button>
   </aside>
 
 </main>

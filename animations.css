@@ -1,7 +1,3 @@
 * {
-  transition:
-    background 0.25s ease,
-    box-shadow 0.25s ease,
-    opacity 0.25s ease,
-    transform 0.25s ease;
+  transition: all 0.2s ease;
 }

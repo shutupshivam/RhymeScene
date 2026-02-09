@@ -110,3 +110,27 @@ function reset(){
   analyzeBtn.classList.remove("active");
   analyzeBtn.classList.add("dim");
 }
+
+const panel = document.querySelector(".analysis-panel");
+const handle = document.getElementById("resizeHandle");
+const lyricsArea = document.querySelector(".lyrics-area");
+
+handle.addEventListener("mousedown", e => {
+  document.addEventListener("mousemove", resize);
+  document.addEventListener("mouseup", stopResize);
+});
+
+function resize(e) {
+  const newWidth = window.innerWidth - e.clientX;
+
+  if (newWidth < 300 || newWidth > 520) return;
+
+  panel.style.width = newWidth + "px";
+  lyricsArea.style.marginRight = newWidth + "px";
+  handle.style.right = newWidth + "px";
+}
+
+function stopResize() {
+  document.removeEventListener("mousemove", resize);
+  document.removeEventListener("mouseup", stopResize);
+}

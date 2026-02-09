@@ -10,9 +10,13 @@ const feedbackBtn = document.getElementById("feedbackBtn");
 const feedbackSection = document.getElementById("feedbackSection");
 const categories = document.getElementById("categoriesSection");
 
+const panel = document.querySelector(".analysis-panel");
+const handle = document.getElementById("resizeHandle");
+const lyricsArea = document.querySelector(".lyrics-area");
+
 let analyzed = false;
 
-/* placeholders */
+/* ---------------- PLACEHOLDERS ---------------- */
 function updatePH() {
   titlePh.style.display = title.textContent.trim() ? "none" : "block";
   lyricsPh.style.display = lyrics.textContent.trim() ? "none" : "block";
@@ -21,15 +25,15 @@ title.addEventListener("input", updatePH);
 lyrics.addEventListener("input", updatePH);
 updatePH();
 
-/* analyze enable */
+/* ---------------- ANALYZE ENABLE ---------------- */
 lyrics.addEventListener("input", () => {
   analyzeBtn.classList.remove("dim");
-  if (analyzed) reset();
+  if (analyzed) resetAnalysis();
 });
 
-/* analyze */
+/* ---------------- ANALYZE ---------------- */
 analyzeBtn.onclick = async () => {
-  if (lyrics.textContent.trim() === "") return;
+  if (!lyrics.textContent.trim()) return;
 
   analyzeBtn.textContent = "Analyzing…";
   analyzeBtn.classList.add("active");
@@ -39,90 +43,144 @@ analyzeBtn.onclick = async () => {
   lockBtn.classList.remove("hidden");
 
   const prompt = `
-Return STRICT JSON:
+Return STRICT JSON ONLY.
+No markdown. No commentary.
+
 {
- feedback:{rating,verdict,industry,highlights[],weaknesses[],direction},
- word:{word:[alts]},
- rhyme:{word:[alts], insight},
- flow:[],
- imagery:[],
- cliche:[],
- emotion:[],
- refinement:[]
+  feedback:{
+    rating,
+    verdict,
+    industry,
+    highlights[],
+    weaknesses[],
+    direction
+  },
+  word:{ word:[alts] },
+  rhyme:{ word:[alts], insight },
+  flow:{ line:[alts] },
+  imagery:{ line:[alts] },
+  cliche:{ phrase:[alts] },
+  emotion:{ line:[alts] },
+  refinement:[tips]
 }
+
 Lyrics:
 """${lyrics.textContent}"""
 `;
 
-  const res = await puter.ai.chat(prompt,{ model:"gpt-5.2" });
-  const data = JSON.parse(res);
+  try {
+    const res = await puter.ai.chat(prompt, { model: "gpt-5.2" });
+    const data = JSON.parse(res);
 
-  renderFeedback(data.feedback);
-  renderCategory(0,data.word);
-  renderCategory(1,data.rhyme.word);
-  renderCategory(2,data.flow);
-  renderCategory(3,data.imagery);
-  renderCategory(4,data.cliche);
-  renderCategory(5,data.emotion);
-  renderCategory(6,data.refinement);
+    /* ---------- SAFE NORMALIZATION ---------- */
+    const feedback   = data.feedback   || {};
+    const word       = data.word       || {};
+    const rhyme      = data.rhyme      || {};
+    const flow       = data.flow       || {};
+    const imagery    = data.imagery    || {};
+    const cliche     = data.cliche     || {};
+    const emotion    = data.emotion    || {};
+    const refinement = data.refinement || [];
 
-  categories.classList.remove("hidden");
-  feedbackBtn.classList.remove("dim");
-  analyzeBtn.textContent = "Analyzed";
-  analyzed = true;
+    renderFeedback(feedback);
+
+    renderCategory(0, word, "Word replacements");
+    renderCategory(1, rhyme.word || {}, rhyme.insight);
+    renderCategory(2, flow, "Flow alternatives");
+    renderCategory(3, imagery, "Imagery upgrades");
+    renderCategory(4, cliche, "Cliché alternatives");
+    renderCategory(5, emotion, "Emotional depth");
+    renderListCategory(6, refinement);
+
+    categories.classList.remove("hidden");
+    feedbackBtn.classList.remove("dim");
+
+    analyzeBtn.textContent = "Analyzed";
+    analyzed = true;
+
+  } catch (err) {
+    console.error("AI error:", err);
+    alert("Analysis failed. Try again.");
+
+    resetAnalysis();
+  }
 };
 
-/* feedback toggle */
+/* ---------------- FEEDBACK TOGGLE ---------------- */
 feedbackBtn.onclick = () => {
   const open = feedbackBtn.classList.toggle("active");
-  feedbackBtn.classList.toggle("dim",!open);
-  feedbackSection.classList.toggle("hidden",!open);
-  categories.style.display = open ? "none":"block";
+  feedbackBtn.classList.toggle("dim", !open);
+  feedbackSection.classList.toggle("hidden", !open);
+  categories.style.display = open ? "none" : "block";
 };
 
-/* categories toggle */
-document.querySelectorAll(".category-title").forEach(t=>{
-  t.onclick=()=>t.parentElement.classList.toggle("open");
+/* ---------------- CATEGORY TOGGLE ---------------- */
+document.querySelectorAll(".category-title").forEach(t => {
+  t.onclick = () => t.parentElement.classList.toggle("open");
 });
 
-/* helpers */
-function renderFeedback(f){
+/* ---------------- RENDER HELPERS ---------------- */
+function renderFeedback(f) {
   feedbackSection.innerHTML = `
-<b>Rating:</b> ${f.rating}/10<br><br>
-<b>Verdict:</b><br>${f.verdict}<br><br>
-<b>Industry:</b> ${f.industry}<br><br>
-<b>Highlights:</b><br>${f.highlights.map(x=>"• "+x).join("<br>")}<br><br>
-<b>Weak Points:</b><br>${f.weaknesses.map(x=>"• "+x).join("<br>")}<br><br>
-<b>Direction:</b><br>${f.direction}
-`;
+    <b>Rating:</b> ${f.rating ?? "–"}/10<br><br>
+    <b>Verdict:</b><br>${f.verdict ?? "No verdict yet."}<br><br>
+    <b>Industry:</b> ${f.industry ?? "—"}<br><br>
+    <b>Highlights:</b><br>${(f.highlights || []).map(x=>"• "+x).join("<br>") || "—"}<br><br>
+    <b>Weak Points:</b><br>${(f.weaknesses || []).map(x=>"• "+x).join("<br>") || "—"}<br><br>
+    <b>Direction:</b><br>${f.direction ?? "—"}
+  `;
 }
 
-function renderCategory(i,obj){
-  const el=document.querySelectorAll(".category-content")[i];
-  el.innerHTML=Object.entries(obj).map(
-    ([k,v])=>`<div>${k} ${v.map(x=>`<span class="pill">${x}</span>`).join("")}</div>`
+function renderCategory(index, obj, insight = "") {
+  const el = document.querySelectorAll(".category-content")[index];
+
+  if (!obj || Object.keys(obj).length === 0) {
+    el.innerHTML = `<div class="muted">Suggestions will appear here</div>`;
+    return;
+  }
+
+  el.innerHTML = Object.entries(obj).map(
+    ([key, values]) =>
+      `<div>
+        <strong>${key}</strong>
+        ${values.map(v => `<span class="pill">${v}</span>`).join("")}
+      </div>`
   ).join("");
+
+  if (insight) {
+    el.innerHTML += `<div class="insight">${insight}</div>`;
+  }
 }
 
-function reset(){
-  analyzed=false;
-  analyzeBtn.textContent="Analyze";
+function renderListCategory(index, list) {
+  const el = document.querySelectorAll(".category-content")[index];
+
+  if (!list || list.length === 0) {
+    el.innerHTML = `<div class="muted">Refinement tips will appear here</div>`;
+    return;
+  }
+
+  el.innerHTML = list.map(x => `• ${x}`).join("<br>");
+}
+
+/* ---------------- RESET ---------------- */
+function resetAnalysis() {
+  analyzed = false;
+  analyzeBtn.textContent = "Analyze";
   analyzeBtn.classList.remove("active");
   analyzeBtn.classList.add("dim");
 }
 
-const panel = document.querySelector(".analysis-panel");
-const handle = document.getElementById("resizeHandle");
-const lyricsArea = document.querySelector(".lyrics-area");
-
-handle.addEventListener("mousedown", e => {
-  document.addEventListener("mousemove", resize);
-  document.addEventListener("mouseup", stopResize);
-});
+/* ---------------- RESIZE PANEL ---------------- */
+if (handle) {
+  handle.addEventListener("mousedown", () => {
+    document.addEventListener("mousemove", resize);
+    document.addEventListener("mouseup", stopResize);
+  });
+}
 
 function resize(e) {
   const newWidth = window.innerWidth - e.clientX;
-
   if (newWidth < 300 || newWidth > 520) return;
 
   panel.style.width = newWidth + "px";

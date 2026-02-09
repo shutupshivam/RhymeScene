@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Rhyme Scene</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <link rel="icon" href="favicon.png" />
 
   <link rel="stylesheet" href="style.css" />
@@ -16,7 +15,7 @@
 
 <header class="topbar glass">
   <div class="logo">
-    <img src="logo.png" alt="Rhyme Scene" />
+    <img src="logo.png" />
   </div>
 </header>
 
@@ -26,17 +25,14 @@
   <section class="lyrics-area">
     <div class="lyrics-sheet glass">
 
-      <button id="lockToggle" class="lock-btn hidden">Edit</button>
+      <button id="lockBtn" class="lock-btn hidden">Edit</button>
 
       <div class="field">
         <div class="placeholder" id="titlePh">Title</div>
         <div id="title" class="title" contenteditable="true"></div>
       </div>
 
-      <div class="field">
-        <div class="placeholder" id="lyricsPh">Type your lyrics here…</div>
-        <div id="lyrics" class="lyrics" contenteditable="true"></div>
-      </div>
+      <div id="lyrics" class="lyrics" contenteditable="true"></div>
 
     </div>
   </section>
@@ -45,17 +41,21 @@
   <div id="resizeHandle"></div>
 
   <!-- ANALYSIS PANEL -->
-  <aside class="analysis-panel glass">
-    <div class="panel-header">Analysis</div>
+  <aside id="analysisPanel" class="analysis-panel glass">
 
-    <div id="categories" class="categories"></div>
-
-    <div id="lineInspector" class="line-inspector hidden">
-      <div class="line-inspector-header">Line Insight</div>
-      <div id="lineInspectorContent"></div>
+    <!-- LINE ACTION PANEL -->
+    <div id="linePanel" class="line-panel hidden">
+      <div class="line-panel-title">Line Insight</div>
+      <div id="linePanelContent"></div>
     </div>
 
-    <button id="analyzeBtn" class="analyze-btn disabled">Analyze</button>
+    <div class="panel-header">Analysis</div>
+    <div id="categories" class="categories"></div>
+
+    <button id="analyzeBtn" class="analyze-btn disabled">
+      Analyze
+    </button>
+
   </aside>
 
 </main>

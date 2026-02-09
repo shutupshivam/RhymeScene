@@ -8,9 +8,7 @@ body {
 /* TOP */
 .topbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  inset: 0 0 auto 0;
   height: 60px;
   padding: 0 24px;
   display: flex;
@@ -31,6 +29,7 @@ body {
   display: flex;
   justify-content: center;
   padding: 48px;
+  overflow-y: auto;
 }
 
 .lyrics-sheet {
@@ -38,7 +37,32 @@ body {
   max-width: 720px;
   padding: 56px;
   border-radius: 26px;
+}
+
+.field {
   position: relative;
+}
+
+.title {
+  font-size: 22px;
+  outline: none;
+}
+
+.lyrics {
+  margin-top: 24px;
+  font-size: 16px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  outline: none;
+  min-height: 200px;
+}
+
+.placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.35;
+  pointer-events: none;
 }
 
 .lock-btn {
@@ -51,32 +75,20 @@ body {
   cursor: pointer;
 }
 
-.field { position: relative; }
+.hidden { display: none; }
 
-.title {
-  font-size: 22px;
-  outline: none;
-}
-
-.lyrics {
-  margin-top: 24px;
-  font-size: 16px;
-  line-height: 1.45;
-  white-space: pre-wrap;
-}
-
+/* LINE INTERACTION */
 .lyrics.locked span {
   display: block;
   padding: 4px 6px;
   border-radius: 6px;
-  cursor: pointer;
 }
 
 .lyrics.locked span:hover {
   background: rgba(255,255,255,0.06);
 }
 
-/* RESIZER */
+/* RESIZE HANDLE */
 #resizeHandle {
   width: 6px;
   cursor: col-resize;
@@ -84,40 +96,51 @@ body {
 
 /* ANALYSIS PANEL */
 .analysis-panel {
-  width: 360px;
-  min-width: 260px;
-  max-width: 520px;
   position: fixed;
   right: 0;
   top: 60px;
   bottom: 0;
+  width: 360px;
+  min-width: 260px;
+  max-width: 520px;
   padding: 24px;
   display: flex;
   flex-direction: column;
 }
 
-/* SCROLLBAR */
+/* SCROLL */
 .categories {
   flex: 1;
   overflow-y: auto;
 }
-
 .categories::-webkit-scrollbar {
   width: 4px;
 }
 .categories::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.2);
-  border-radius: 10px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 8px;
+}
+
+/* BOTTOM ISLAND */
+.line-island {
+  position: sticky;
+  bottom: 16px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.line-island button {
+  border-radius: 999px;
+  padding: 6px 14px;
+  border: none;
+  cursor: pointer;
 }
 
 /* LINE PANEL */
 .line-panel {
-  padding: 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
   font-size: 13px;
+  margin-bottom: 12px;
 }
-
-.hidden { display: none; }
 
 /* ANALYZE */
 .analyze-btn {
@@ -126,7 +149,6 @@ body {
   border: none;
   cursor: pointer;
 }
-
 .analyze-btn.disabled {
   opacity: 0.35;
 }

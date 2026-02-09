@@ -1,3 +1,4 @@
 window.state = {
-  locked: false
+  locked: false,
+  selectedLine: ""
 };

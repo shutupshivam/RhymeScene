@@ -26,31 +26,36 @@
   <section class="lyrics-area">
     <div class="lyrics-sheet glass">
 
+      <button id="lockToggle" class="lock-btn hidden">Edit</button>
+
       <div class="field">
         <div class="placeholder" id="titlePh">Title</div>
         <div id="title" class="title" contenteditable="true"></div>
       </div>
 
-      <div id="lyrics" class="lyrics" contenteditable="true"></div>
+      <div class="field">
+        <div class="placeholder" id="lyricsPh">Type your lyrics here…</div>
+        <div id="lyrics" class="lyrics" contenteditable="true"></div>
+      </div>
 
     </div>
   </section>
 
+  <!-- RESIZE HANDLE -->
+  <div id="resizeHandle"></div>
+
   <!-- ANALYSIS PANEL -->
   <aside class="analysis-panel glass">
-    <div id="resizeHandle"></div>
+    <div class="panel-header">Analysis</div>
 
-    <div class="panel-header">Inspector</div>
+    <div id="categories" class="categories"></div>
 
-    <div id="panelContent" class="panel-content">
-      <div class="empty-state">
-        Select a line to see suggestions or explanation.
-      </div>
+    <div id="lineInspector" class="line-inspector hidden">
+      <div class="line-inspector-header">Line Insight</div>
+      <div id="lineInspectorContent"></div>
     </div>
 
-    <button id="actionBtn" class="analyze-btn disabled">
-      Analyze
-    </button>
+    <button id="analyzeBtn" class="analyze-btn disabled">Analyze</button>
   </aside>
 
 </main>

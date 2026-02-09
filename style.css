@@ -5,15 +5,21 @@ body {
   font-family: Inter, system-ui;
 }
 
-/* TOP */
+/* TOP BAR */
 .topbar {
   position: fixed;
-  inset: 0 0 auto 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 60px;
   padding: 0 24px;
   display: flex;
   align-items: center;
   z-index: 100;
+}
+
+.logo img {
+  height: 26px;
 }
 
 /* LAYOUT */
@@ -26,10 +32,10 @@ body {
 /* LYRICS */
 .lyrics-area {
   flex: 1;
+  overflow-y: auto;
+  padding: 48px;
   display: flex;
   justify-content: center;
-  padding: 48px;
-  overflow-y: auto;
 }
 
 .lyrics-sheet {
@@ -54,9 +60,10 @@ body {
   line-height: 1.45;
   white-space: pre-wrap;
   outline: none;
-  min-height: 200px;
+  min-height: 240px;
 }
 
+/* PLACEHOLDERS */
 .placeholder {
   position: absolute;
   top: 0;
@@ -65,28 +72,18 @@ body {
   pointer-events: none;
 }
 
+/* LOCK BUTTON */
 .lock-btn {
   position: absolute;
   top: 18px;
   right: 18px;
-  border-radius: 999px;
   padding: 6px 14px;
+  border-radius: 999px;
   border: none;
   cursor: pointer;
 }
 
 .hidden { display: none; }
-
-/* LINE INTERACTION */
-.lyrics.locked span {
-  display: block;
-  padding: 4px 6px;
-  border-radius: 6px;
-}
-
-.lyrics.locked span:hover {
-  background: rgba(255,255,255,0.06);
-}
 
 /* RESIZE HANDLE */
 #resizeHandle {
@@ -94,21 +91,21 @@ body {
   cursor: col-resize;
 }
 
-/* ANALYSIS PANEL */
+/* RIGHT PANEL */
 .analysis-panel {
   position: fixed;
-  right: 0;
   top: 60px;
+  right: 0;
   bottom: 0;
   width: 360px;
-  min-width: 260px;
+  min-width: 280px;
   max-width: 520px;
   padding: 24px;
   display: flex;
   flex-direction: column;
 }
 
-/* SCROLL */
+/* SCROLLBAR */
 .categories {
   flex: 1;
   overflow-y: auto;
@@ -121,34 +118,21 @@ body {
   border-radius: 8px;
 }
 
-/* BOTTOM ISLAND */
+/* LINE ISLAND */
 .line-island {
-  position: sticky;
-  bottom: 16px;
   display: flex;
   gap: 10px;
   margin-bottom: 12px;
 }
 .line-island button {
-  border-radius: 999px;
   padding: 6px 14px;
+  border-radius: 999px;
   border: none;
   cursor: pointer;
 }
 
-/* LINE PANEL */
-.line-panel {
+/* LINE OUTPUT */
+.line-output {
   font-size: 13px;
   margin-bottom: 12px;
-}
-
-/* ANALYZE */
-.analyze-btn {
-  height: 52px;
-  border-radius: 16px;
-  border: none;
-  cursor: pointer;
-}
-.analyze-btn.disabled {
-  opacity: 0.35;
 }

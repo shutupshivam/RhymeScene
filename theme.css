@@ -1,15 +1,19 @@
 body.dark {
-  background: radial-gradient(1200px at top, #1b1b1d, #0b0b0c);
+  background: #0f0f11;
   color: #eaeaea;
 }
 
 .glass {
-  background: rgba(255,255,255,0.07);
-  backdrop-filter: blur(26px);
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(20px);
 }
 
-.analyze-btn:not(.disabled),
-.line-island button {
+.analyze-btn:not(.disabled) {
   background: linear-gradient(135deg, #ff7a18, #ffb347);
   color: #0b0b0c;
+}
+
+.feedback-btn.active {
+  background: rgba(255,122,24,0.18);
+  color: #ffb347;
 }

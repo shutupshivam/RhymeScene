@@ -77,14 +77,19 @@ body {
 
 /* RIGHT PANEL */
 .analysis-panel {
+  position: fixed;
+  top: 60px;              /* below header */
+  right: 0;
+  height: calc(100vh - 60px);
   width: 380px;
   min-width: 300px;
   max-width: 520px;
+
   display: flex;
   flex-direction: column;
-  resize: horizontal;
-  overflow: hidden;
+  border-left: 1px solid rgba(255,255,255,0.08);
 }
+
 
 .panel-top {
   position: sticky;
@@ -173,3 +178,4 @@ body {
   font-size: 12px;
   background: rgba(255,255,255,0.08);
 }
+

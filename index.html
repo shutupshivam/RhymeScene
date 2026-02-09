@@ -13,10 +13,34 @@
 
 <body class="dark">
 
-<header class="topbar glass">
-  <div class="logo">
-    <img src="logo.png" alt="Rhyme Scene" />
-  </div>
+<header class="topbar glass site-header">
+  <!-- SVG LOGO -->
+  <svg
+    class="logo"
+    width="180"
+    height="36"
+    viewBox="0 0 180 36"
+    xmlns="http://www.w3.org/2000/svg"
+    role="img"
+    aria-label="RhymeScene"
+  >
+    <defs>
+      <linearGradient id="sceneGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#9B6CFF" />
+        <stop offset="100%" stop-color="#3B82F6" />
+      </linearGradient>
+    </defs>
+
+    <text x="0" y="26" fill="#FFFFFF" font-size="26" font-weight="700"
+      font-family="Inter, system-ui, -apple-system, sans-serif">
+      Rhyme
+    </text>
+
+    <text x="78" y="26" fill="url(#sceneGradient)" font-size="26" font-weight="700"
+      font-family="Inter, system-ui, -apple-system, sans-serif">
+      Scene
+    </text>
+  </svg>
 </header>
 
 <main class="layout">
@@ -38,47 +62,77 @@
     </div>
   </section>
 
-  <!-- RIGHT -->
-  <aside class="analysis-panel glass">
+  <!-- RIGHT PANEL -->
+  <aside id="analysisPanel" class="analysis-panel">
 
-    <!-- FIXED -->
-    <button id="analyzeBtn" class="analyze-btn disabled glow-idle">
-      Analyze
-    </button>
+    <!-- FIXED TOP -->
+    <div class="panel-top glass">
+      <h3 class="panel-heading">Analysis</h3>
+    </div>
 
-    <!-- SCROLL -->
+    <!-- SCROLL AREA -->
     <div class="panel-scroll">
 
-      <button id="feedbackBtn" class="feedback-btn">
+      <button id="feedbackBtn" class="feedback-btn dim">
         Feedback
       </button>
 
-      <section id="feedbackSection" class="feedback-section hidden fade-in"></section>
+      <section id="feedbackSection" class="feedback-section hidden"></section>
 
-      <section id="categoriesSection" class="categories-section">
+      <section id="categoriesSection" class="categories hidden">
 
-        <div class="category" data-cat="word">
+        <!-- WORD -->
+        <div class="category">
           <div class="category-title">Word Replacement</div>
           <div class="category-content"></div>
         </div>
 
-        <div class="category" data-cat="rhyme">
+        <!-- RHYME -->
+        <div class="category">
           <div class="category-title">Rhymes</div>
           <div class="category-content"></div>
         </div>
 
-        <div class="category" data-cat="flow">
+        <!-- FLOW -->
+        <div class="category">
           <div class="category-title">Flow & Cadence</div>
           <div class="category-content"></div>
         </div>
 
-        <div class="category" data-cat="imagery">
+        <!-- IMAGERY -->
+        <div class="category">
           <div class="category-title">Imagery</div>
+          <div class="category-content"></div>
+        </div>
+
+        <!-- CLICHE -->
+        <div class="category">
+          <div class="category-title">Cliché</div>
+          <div class="category-content"></div>
+        </div>
+
+        <!-- EMOTION -->
+        <div class="category">
+          <div class="category-title">Emotional Depth</div>
+          <div class="category-content"></div>
+        </div>
+
+        <!-- REFINEMENT -->
+        <div class="category">
+          <div class="category-title">Refinement</div>
           <div class="category-content"></div>
         </div>
 
       </section>
     </div>
+
+    <!-- FIXED BOTTOM -->
+    <div class="panel-bottom glass">
+      <button id="analyzeBtn" class="analyze-btn dim">
+        Analyze
+      </button>
+    </div>
+
   </aside>
 
 </main>

@@ -1,80 +1,114 @@
-const lyricsEl = document.getElementById("lyrics");
+const title = document.getElementById("title");
+const lyrics = document.getElementById("lyrics");
+const titlePh = document.getElementById("titlePh");
+const lyricsPh = document.getElementById("lyricsPh");
+
 const analyzeBtn = document.getElementById("analyzeBtn");
 const lockBtn = document.getElementById("lockBtn");
-const linePanel = document.getElementById("linePanel");
-const linePanelContent = document.getElementById("linePanelContent");
-const analysisPanel = document.getElementById("analysisPanel");
 const resizeHandle = document.getElementById("resizeHandle");
+const analysisPanel = document.getElementById("analysisPanel");
+
+const lineIsland = document.getElementById("lineIsland");
+const linePanel = document.getElementById("linePanel");
+const explainBtn = document.getElementById("explainLine");
+const replaceBtn = document.getElementById("replaceLine");
+
+/* PLACEHOLDERS */
+function updatePH() {
+  titlePh.style.display = title.textContent.trim() ? "none" : "block";
+  lyricsPh.style.display = lyrics.textContent.trim() ? "none" : "block";
+}
+title.addEventListener("input", updatePH);
+lyrics.addEventListener("input", updatePH);
+updatePH();
 
 /* ENABLE ANALYZE */
-lyricsEl.addEventListener("input", () => {
+lyrics.addEventListener("input", () => {
   analyzeBtn.classList.remove("disabled");
+  if (state.locked) unlockLyrics();
 });
 
 /* ANALYZE */
-analyzeBtn.onclick = () => {
+analyzeBtn.onclick = async () => {
   if (analyzeBtn.classList.contains("disabled")) return;
 
+  analyzeBtn.textContent = "Analyzing…";
   lockLyrics();
+
+  await puter.ai.chat("Analyze these lyrics briefly", {
+    model: "gpt-5.2"
+  });
+
   analyzeBtn.textContent = "Analyzed";
-  lockBtn.classList.remove("hidden");
 };
 
 /* LOCK / EDIT */
 lockBtn.onclick = () => {
-  if (state.locked) unlockLyrics();
-  else lockLyrics();
+  state.locked ? unlockLyrics() : lockLyrics();
 };
 
 function lockLyrics() {
   state.locked = true;
-  lyricsEl.contentEditable = false;
+  lyrics.contentEditable = false;
   lockBtn.textContent = "Edit";
+  lockBtn.classList.remove("hidden");
   wrapLines();
 }
 
 function unlockLyrics() {
   state.locked = false;
-  lyricsEl.contentEditable = true;
+  lyrics.contentEditable = true;
   lockBtn.textContent = "Lock";
   unwrapLines();
+  lineIsland.classList.add("hidden");
+  linePanel.classList.add("hidden");
 }
 
 /* LINE WRAP */
 function wrapLines() {
-  const lines = lyricsEl.innerText.split("\n");
-  lyricsEl.innerHTML = lines.map(l =>
+  const lines = lyrics.innerText.split("\n");
+  lyrics.innerHTML = lines.map(l =>
     `<span>${l || "&nbsp;"}</span>`
   ).join("");
-  lyricsEl.classList.add("locked");
+  lyrics.classList.add("locked");
 
-  lyricsEl.querySelectorAll("span").forEach(span => {
-    span.onmouseenter = () => {
-      span.innerHTML += `<small> Replace · Explain</small>`;
+  lyrics.querySelectorAll("span").forEach(span => {
+    span.onclick = () => {
+      state.selectedLine = span.innerText;
+      lineIsland.classList.remove("hidden");
     };
-    span.onclick = () => showLineExplanation(span.innerText);
   });
 }
 
 function unwrapLines() {
-  lyricsEl.innerText = lyricsEl.innerText;
-  lyricsEl.classList.remove("locked");
+  lyrics.innerText = lyrics.innerText;
+  lyrics.classList.remove("locked");
 }
 
-/* LINE EXPLANATION */
-function showLineExplanation(line) {
+/* LINE ACTIONS */
+explainBtn.onclick = async () => {
   linePanel.classList.remove("hidden");
-  linePanelContent.innerHTML = `
-    <b>${line}</b>
-    <p>This line expresses emotion or imagery related to the song’s theme.</p>
-  `;
-}
+  const res = await puter.ai.chat(
+    `Explain this line briefly: "${state.selectedLine}"`,
+    { model: "gpt-5.2" }
+  );
+  linePanel.innerHTML = `<b>${state.selectedLine}</b><br>${res}`;
+};
+
+replaceBtn.onclick = async () => {
+  linePanel.classList.remove("hidden");
+  const res = await puter.ai.chat(
+    `Suggest 3 replacements for this line preserving rhyme and flow: "${state.selectedLine}"`,
+    { model: "gpt-5.2" }
+  );
+  linePanel.innerHTML = `<b>Replacements</b><br>${res}`;
+};
 
 /* RESIZE PANEL */
 resizeHandle.onmousedown = e => {
   document.onmousemove = e => {
-    const newWidth = window.innerWidth - e.clientX;
-    analysisPanel.style.width = `${newWidth}px`;
+    const newW = window.innerWidth - e.clientX;
+    analysisPanel.style.width = `${Math.min(520, Math.max(260, newW))}px`;
   };
   document.onmouseup = () => {
     document.onmousemove = null;

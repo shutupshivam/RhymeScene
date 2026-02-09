@@ -5,106 +5,107 @@ const lyricsPh = document.getElementById("lyricsPh");
 
 const analyzeBtn = document.getElementById("analyzeBtn");
 const lockBtn = document.getElementById("lockBtn");
-const resizeHandle = document.getElementById("resizeHandle");
-const analysisPanel = document.getElementById("analysisPanel");
 
-const lineIsland = document.getElementById("lineIsland");
-const lineOutput = document.getElementById("lineOutput");
-const explainBtn = document.getElementById("explainLine");
-const replaceBtn = document.getElementById("replaceLine");
+const feedbackBtn = document.getElementById("feedbackBtn");
+const feedbackSection = document.getElementById("feedbackSection");
+const categoriesSection = document.getElementById("categoriesSection");
 
-/* PLACEHOLDERS */
-function updatePlaceholders() {
+let analyzed = false;
+
+/* placeholders */
+function updatePH() {
   titlePh.style.display = title.textContent.trim() ? "none" : "block";
   lyricsPh.style.display = lyrics.textContent.trim() ? "none" : "block";
 }
-title.addEventListener("input", updatePlaceholders);
-lyrics.addEventListener("input", updatePlaceholders);
-updatePlaceholders();
+title.addEventListener("input", updatePH);
+lyrics.addEventListener("input", updatePH);
+updatePH();
 
-/* ANALYZE ENABLE */
+/* enable analyze */
 lyrics.addEventListener("input", () => {
   analyzeBtn.classList.remove("disabled");
-  if (state.locked) unlockLyrics();
+  analyzeBtn.classList.add("glow-idle");
+  if (analyzed) resetAnalysis();
 });
 
-/* ANALYZE */
+/* analyze */
 analyzeBtn.onclick = async () => {
   if (analyzeBtn.classList.contains("disabled")) return;
 
   analyzeBtn.textContent = "Analyzing…";
+  analyzeBtn.classList.remove("glow-idle");
+  analyzeBtn.classList.add("analyzing");
+
   lockLyrics();
 
-  try {
-    await puter.ai.chat("Analyze the lyrics briefly", {
-      model: "gpt-5.2"
-    });
-  } catch {}
+  const prompt = `
+Return STRICT JSON:
+{
+ feedback:{rating,verdict,industry,highlights[],weaknesses[],direction},
+ word[], rhyme[], flow[], imagery[]
+}
+Lyrics:
+"""${lyrics.textContent}"""
+`;
+
+  const res = await puter.ai.chat(prompt, { model: "gpt-5.2" });
+  const data = JSON.parse(res);
+
+  renderFeedback(data.feedback);
+  renderCategory("word", data.word);
+  renderCategory("rhyme", data.rhyme);
+  renderCategory("flow", data.flow);
+  renderCategory("imagery", data.imagery);
 
   analyzeBtn.textContent = "Analyzed";
+  analyzeBtn.classList.remove("analyzing");
+  analyzed = true;
 };
 
-/* LOCK / EDIT */
-lockBtn.onclick = () => {
-  state.locked ? unlockLyrics() : lockLyrics();
-};
-
+/* lock / edit */
 function lockLyrics() {
-  state.locked = true;
   lyrics.contentEditable = false;
   lockBtn.textContent = "Edit";
   lockBtn.classList.remove("hidden");
-  bindLineClicks();
 }
 
-function unlockLyrics() {
-  state.locked = false;
+lockBtn.onclick = () => {
   lyrics.contentEditable = true;
-  lockBtn.textContent = "Lock";
-  lineIsland.classList.add("hidden");
-  lineOutput.classList.add("hidden");
+  lockBtn.classList.add("hidden");
+};
+
+/* reset */
+function resetAnalysis() {
+  analyzed = false;
+  analyzeBtn.textContent = "Analyze";
+  analyzeBtn.classList.add("glow-idle");
 }
 
-/* LINE SELECTION */
-function bindLineClicks() {
-  const lines = lyrics.innerText.split("\n");
-  lyrics.innerHTML = lines.map(l => `<div class="line">${l}</div>`).join("");
+/* feedback toggle */
+feedbackBtn.onclick = () => {
+  const open = feedbackBtn.classList.toggle("active");
+  feedbackSection.classList.toggle("hidden", !open);
+  categoriesSection.style.display = open ? "none" : "block";
+};
 
-  lyrics.querySelectorAll(".line").forEach(line => {
-    line.onclick = () => {
-      state.selectedLine = line.innerText;
-      lineIsland.classList.remove("hidden");
-    };
-  });
+/* render */
+function renderFeedback(f) {
+  feedbackSection.innerHTML = `
+<b>Rating:</b> ${f.rating}/10<br><br>
+<b>Verdict:</b><br>${f.verdict}<br><br>
+<b>Industry:</b> ${f.industry}<br><br>
+<b>Highlights:</b><br>${f.highlights.map(l=>"• "+l).join("<br>")}<br><br>
+<b>Weak Points:</b><br>${f.weaknesses.map(l=>"• "+l).join("<br>")}<br><br>
+<b>Direction:</b><br>${f.direction}
+`;
 }
 
-/* LINE ACTIONS */
-explainBtn.onclick = async () => {
-  lineOutput.classList.remove("hidden");
-  const res = await puter.ai.chat(
-    `Explain this line briefly: "${state.selectedLine}"`,
-    { model: "gpt-5.2" }
-  );
-  lineOutput.innerHTML = `<b>${state.selectedLine}</b><br>${res}`;
-};
+/* categories */
+document.querySelectorAll(".category-title").forEach(t => {
+  t.onclick = () => t.parentElement.classList.toggle("open");
+});
 
-replaceBtn.onclick = async () => {
-  lineOutput.classList.remove("hidden");
-  const res = await puter.ai.chat(
-    `Suggest 3 better replacements for this line: "${state.selectedLine}"`,
-    { model: "gpt-5.2" }
-  );
-  lineOutput.innerHTML = `<b>Replacements</b><br>${res}`;
-};
-
-/* RESIZE PANEL */
-resizeHandle.onmousedown = () => {
-  document.onmousemove = e => {
-    const newWidth = window.innerWidth - e.clientX;
-    analysisPanel.style.width =
-      Math.max(280, Math.min(520, newWidth)) + "px";
-  };
-  document.onmouseup = () => {
-    document.onmousemove = null;
-  };
-};
+function renderCategory(name, items) {
+  const el = document.querySelector(`.category[data-cat="${name}"] .category-content`);
+  el.innerHTML = items.map(i => `<span class="pill">${i}</span>`).join("");
+}

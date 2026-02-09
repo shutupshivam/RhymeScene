@@ -1,99 +1,82 @@
-const lyrics = document.getElementById("lyrics");
+const lyricsEl = document.getElementById("lyrics");
 const analyzeBtn = document.getElementById("analyzeBtn");
-const lockToggle = document.getElementById("lockToggle");
-const categoriesEl = document.getElementById("categories");
+const lockBtn = document.getElementById("lockBtn");
+const linePanel = document.getElementById("linePanel");
+const linePanelContent = document.getElementById("linePanelContent");
+const analysisPanel = document.getElementById("analysisPanel");
 const resizeHandle = document.getElementById("resizeHandle");
-const analysisPanel = document.querySelector(".analysis-panel");
-
-const lineInspector = document.getElementById("lineInspector");
-const lineInspectorContent = document.getElementById("lineInspectorContent");
 
 /* ENABLE ANALYZE */
-lyrics.addEventListener("input", () => {
-  analyzeBtn.classList.toggle("disabled", lyrics.innerText.trim() === "");
-  if (state.analyzed) {
-    analyzeBtn.textContent = "Analyze";
-    state.analyzed = false;
-  }
+lyricsEl.addEventListener("input", () => {
+  analyzeBtn.classList.remove("disabled");
 });
 
 /* ANALYZE */
-analyzeBtn.onclick = async () => {
+analyzeBtn.onclick = () => {
   if (analyzeBtn.classList.contains("disabled")) return;
 
-  analyzeBtn.textContent = "Analyzing…";
-  state.analyzed = true;
-
-  lockLyrics(true);
-  renderCategories({
-    Overview: ["Structure is balanced", "Hook is emotionally strong"],
-    Flow: ["Line 3 slightly longer"],
-    Emotion: ["Reflective, longing tone"]
-  });
-
+  lockLyrics();
   analyzeBtn.textContent = "Analyzed";
+  lockBtn.classList.remove("hidden");
 };
 
 /* LOCK / EDIT */
-function lockLyrics(lock) {
-  state.locked = lock;
-  lyrics.contentEditable = !lock;
-  lyrics.classList.toggle("locked", lock);
-  lockToggle.textContent = lock ? "Edit" : "Lock";
-  lockToggle.classList.remove("hidden");
-  if (lock) prepareLines();
+lockBtn.onclick = () => {
+  if (state.locked) unlockLyrics();
+  else lockLyrics();
+};
+
+function lockLyrics() {
+  state.locked = true;
+  lyricsEl.contentEditable = false;
+  lockBtn.textContent = "Edit";
+  wrapLines();
 }
 
-lockToggle.onclick = () => lockLyrics(!state.locked);
-
-/* LINE PREP */
-function prepareLines() {
-  const lines = lyrics.innerText.split("\n");
-  lyrics.innerHTML = lines.map(line => `
-    <div>
-      ${line || "&nbsp;"}
-      <span class="line-actions">
-        <button onclick="explainLine(this)">Explain</button>
-        <button onclick="replaceLine(this)">Replace</button>
-      </span>
-    </div>
-  `).join("");
+function unlockLyrics() {
+  state.locked = false;
+  lyricsEl.contentEditable = true;
+  lockBtn.textContent = "Lock";
+  unwrapLines();
 }
 
-/* LINE ACTIONS */
-window.explainLine = btn => {
-  const line = btn.parentElement.parentElement.innerText;
-  lineInspector.classList.remove("hidden");
-  lineInspectorContent.innerText = `Explanation for: "${line}"`;
-};
+/* LINE WRAP */
+function wrapLines() {
+  const lines = lyricsEl.innerText.split("\n");
+  lyricsEl.innerHTML = lines.map(l =>
+    `<span>${l || "&nbsp;"}</span>`
+  ).join("");
+  lyricsEl.classList.add("locked");
 
-window.replaceLine = btn => {
-  const line = btn.parentElement.parentElement.innerText;
-  lineInspector.classList.remove("hidden");
-  lineInspectorContent.innerText = `Replacement suggestions for: "${line}"`;
-};
-
-/* RESIZE PANEL */
-let resizing = false;
-resizeHandle.onmousedown = () => resizing = true;
-document.onmouseup = () => resizing = false;
-document.onmousemove = e => {
-  if (!resizing) return;
-  const width = window.innerWidth - e.clientX;
-  analysisPanel.style.width = width + "px";
-};
-
-/* CATEGORIES */
-function renderCategories(data) {
-  categoriesEl.innerHTML = "";
-  Object.entries(data).forEach(([name, items]) => {
-    const el = document.createElement("div");
-    el.className = "category";
-    el.innerHTML = `
-      <div class="category-title">${name}</div>
-      <div class="category-content">${items.join("<br>")}</div>
-    `;
-    el.onclick = () => el.classList.toggle("expanded");
-    categoriesEl.appendChild(el);
+  lyricsEl.querySelectorAll("span").forEach(span => {
+    span.onmouseenter = () => {
+      span.innerHTML += `<small> Replace · Explain</small>`;
+    };
+    span.onclick = () => showLineExplanation(span.innerText);
   });
 }
+
+function unwrapLines() {
+  lyricsEl.innerText = lyricsEl.innerText;
+  lyricsEl.classList.remove("locked");
+}
+
+/* LINE EXPLANATION */
+function showLineExplanation(line) {
+  linePanel.classList.remove("hidden");
+  linePanelContent.innerHTML = `
+    <b>${line}</b>
+    <p>This line expresses emotion or imagery related to the song’s theme.</p>
+  `;
+}
+
+/* RESIZE PANEL */
+resizeHandle.onmousedown = e => {
+  document.onmousemove = e => {
+    const newWidth = window.innerWidth - e.clientX;
+    analysisPanel.style.width = `${newWidth}px`;
+  };
+  document.onmouseup = () => {
+    document.onmousemove = null;
+  };
+};

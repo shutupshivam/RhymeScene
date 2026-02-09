@@ -21,10 +21,9 @@
 
 <main class="layout">
 
-  <!-- LYRICS -->
+  <!-- CENTER -->
   <section class="lyrics-area">
     <div class="lyrics-sheet glass">
-
       <button id="lockBtn" class="lock-btn hidden">Edit</button>
 
       <div class="field">
@@ -36,36 +35,55 @@
         <div id="lyricsPh" class="placeholder">Type your lyrics here…</div>
         <div id="lyrics" class="lyrics" contenteditable="true"></div>
       </div>
-
     </div>
   </section>
 
-  <!-- RESIZER -->
-  <div id="resizeHandle"></div>
+  <!-- RIGHT -->
+  <aside class="analysis-panel glass">
 
-  <!-- RIGHT PANEL -->
-  <aside id="analysisPanel" class="analysis-panel glass">
+    <!-- FIXED -->
+    <button id="analyzeBtn" class="analyze-btn disabled glow-idle">
+      Analyze
+    </button>
 
-    <!-- LINE ACTION ISLAND -->
-    <div id="lineIsland" class="line-island hidden">
-      <button id="explainLine">Explain</button>
-      <button id="replaceLine">Replace</button>
+    <!-- SCROLL -->
+    <div class="panel-scroll">
+
+      <button id="feedbackBtn" class="feedback-btn">
+        Feedback
+      </button>
+
+      <section id="feedbackSection" class="feedback-section hidden fade-in"></section>
+
+      <section id="categoriesSection" class="categories-section">
+
+        <div class="category" data-cat="word">
+          <div class="category-title">Word Replacement</div>
+          <div class="category-content"></div>
+        </div>
+
+        <div class="category" data-cat="rhyme">
+          <div class="category-title">Rhymes</div>
+          <div class="category-content"></div>
+        </div>
+
+        <div class="category" data-cat="flow">
+          <div class="category-title">Flow & Cadence</div>
+          <div class="category-content"></div>
+        </div>
+
+        <div class="category" data-cat="imagery">
+          <div class="category-title">Imagery</div>
+          <div class="category-content"></div>
+        </div>
+
+      </section>
     </div>
-
-    <!-- LINE OUTPUT -->
-    <div id="lineOutput" class="line-output hidden"></div>
-
-    <div class="panel-header">Analysis</div>
-    <div class="categories" id="categories"></div>
-
-    <button id="analyzeBtn" class="analyze-btn disabled">Analyze</button>
-
   </aside>
 
 </main>
 
 <script src="https://js.puter.com/v2/"></script>
-<script src="context.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
